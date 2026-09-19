@@ -46,24 +46,15 @@ navigator.serviceWorker.register('sw.js')
 <header class="sticky top-0 z-30 bg-maroon-900 text-amber-100 shadow-md border-b-2 border-saffron-500">
 <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between relative">
 <div class="flex items-center space-x-2 space-x-reverse">
-<button id="reset-home-btn" onclick="navigateTo('home')" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="මුල් පිටුව">
-<i class="fa-solid fa-house text-lg"></i>
-</button>
-<button onclick="showBookmarks()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors relative" title="සුරැකි මාතිකා">
-<i class="fa-solid fa-bookmark text-lg"></i>
-<span id="fav-badge" class="hidden absolute -top-1 -right-1 bg-saffron-500 text-maroon-950 font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
-</button>
+<button id="reset-home-btn" onclick="navigateTo('home')" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="මුල් පිටුව"><i class="fa-solid fa-house text-lg"></i></button>
+<button onclick="showBookmarks()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors relative" title="සුරැකි මාතිකා"><i class="fa-solid fa-bookmark text-lg"></i><span id="fav-badge" class="hidden absolute -top-1 -right-1 bg-saffron-500 text-maroon-950 font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span></button>
 </div>
 <div class="flex items-center space-x-2 space-x-reverse mx-auto text-center cursor-pointer" onclick="navigateTo('home')">
-<div class="w-9 h-9 rounded-full bg-saffron-500/20 border border-saffron-400 flex items-center justify-center text-saffron-300 shadow-inner shrink-0">
-<i class="fa-solid fa-dharmachakra text-xl"></i>
-</div>
+<div class="w-9 h-9 rounded-full bg-saffron-500/20 border border-saffron-400 flex items-center justify-center text-saffron-300 shadow-inner shrink-0"><i class="fa-solid fa-dharmachakra text-xl"></i></div>
 <div><h1 class="font-bold text-xl sm:text-2xl leading-tight text-saffron-100 tracking-wide">අභිධර්ම මාතිකා</h1></div>
 </div>
 <div class="flex items-center space-x-2 space-x-reverse">
-<button id="theme-toggle-btn" onclick="toggleDarkMode()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="තේමාව වෙනස් කරන්න">
-<i id="theme-toggle-icon" class="fa-solid fa-moon text-lg"></i>
-</button>
+<button id="theme-toggle-btn" onclick="toggleDarkMode()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="තේමාව වෙනස් කරන්න"><i id="theme-toggle-icon" class="fa-solid fa-moon text-lg"></i></button>
 </div>
 </div>
 </header>
@@ -138,7 +129,6 @@ navigator.serviceWorker.register('sw.js')
 <section id="view-sabbatika" class="hidden space-y-5">
 <div class="flex justify-end gap-2">
 <button onclick="openEditSabbatikaModal()" class="text-xs text-maroon-950 bg-saffron-500 hover:bg-saffron-600 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1"><i class="fa-solid fa-pen"></i> සබ්බත්තික විස්තර සංස්කරණය</button>
-<button onclick="openEditSabbatikaBreakdownModal()" class="text-xs text-white bg-maroon-900 hover:bg-maroon-800 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> ස්කන්ධ, ආයතන, ධාතු, සත්‍ය සංස්කරණය</button>
 </div>
 <div class="bg-gradient-to-r from-maroon-900 to-amber-900 text-amber-50 p-5 rounded-2xl shadow border border-saffron-500/40 space-y-3">
 <span class="inline-block text-sm font-bold px-3 py-1 rounded-lg bg-saffron-500 text-maroon-950">සබ්බත්තික මාතිකා</span>
@@ -160,10 +150,10 @@ navigator.serviceWorker.register('sw.js')
 <button onclick="switchSabbatikaTab('sathya')" id="sab-tab-sathya" class="flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1"><i class="fa-solid fa-scale-balanced text-xs"></i> සත්‍ය (4)</button>
 </div>
 <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-amber-200 dark:border-slate-700 shadow-sm space-y-4">
-<div id="sab-panel-skandha" class="sab-panel space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ස්කන්ධ 5 ට බෙදීම:</h4><div id="sab-skandha-list" class="space-y-3 text-sm"></div></div>
-<div id="sab-panel-ayatana" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ආයතන 12 ට බෙදීම:</h4><div id="sab-ayatana-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div></div>
-<div id="sab-panel-dhatu" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ධාතු 18 ට බෙදීම:</h4><div id="sab-dhatu-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div></div>
-<div id="sab-panel-sathya" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">චතුරාර්ය සත්‍යය:</h4><div id="sab-sathya-list" class="space-y-2 text-sm"></div></div>
+<div id="sab-panel-skandha" class="sab-panel space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ස්කන්ධ 5 ට බෙදීම:</h4><div id="sab-skandha-list" class="space-y-1 text-sm"></div></div>
+<div id="sab-panel-ayatana" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ආයතන 12 ට බෙදීම:</h4><div id="sab-ayatana-list" class="space-y-1 text-sm"></div></div>
+<div id="sab-panel-dhatu" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ධාතු 18 ට බෙදීම:</h4><div id="sab-dhatu-list" class="space-y-1 text-sm"></div></div>
+<div id="sab-panel-sathya" class="sab-panel hidden space-y-3"><h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">චතුරාර්ය සත්‍යය:</h4><div id="sab-sathya-list" class="space-y-1 text-sm"></div></div>
 </div>
 </section>
 
@@ -171,7 +161,6 @@ navigator.serviceWorker.register('sw.js')
 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-amber-200 dark:border-slate-700 pb-3 gap-2">
 <div><h2 id="list-title" class="text-xl font-bold text-maroon-900 dark:text-saffron-200"></h2><p id="list-subtitle" class="text-xs text-amber-800 dark:text-saffron-400"></p></div>
 <div class="flex items-center gap-2">
-<button onclick="openAddMatikaModal()" class="text-xs text-maroon-950 bg-saffron-500 hover:bg-saffron-600 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1"><i class="fa-solid fa-plus"></i> නව මාතිකාවක් එකතු කරන්න</button>
 <button onclick="navigateTo('home')" class="text-xs text-amber-800 dark:text-saffron-300 hover:text-amber-950 font-medium px-3 py-1.5 rounded-lg border border-amber-300 dark:border-slate-700 bg-amber-50 dark:bg-slate-800"><i class="fa-solid fa-arrow-left"></i> මුල් පිටුවට</button>
 </div>
 </div>
@@ -201,24 +190,18 @@ navigator.serviceWorker.register('sw.js')
 <div class="bg-amber-100/80 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex items-center justify-between">
 <div><span id="detail-category-tag" class="text-xs font-semibold px-2.5 py-0.5 rounded bg-saffron-500 text-maroon-950"></span><h2 id="detail-matika-title" class="text-xl font-bold text-maroon-900 dark:text-saffron-200 mt-1"></h2></div>
 <div class="flex items-center gap-2">
-<button onclick="openEditMatikaModal()" class="text-xs text-maroon-950 bg-saffron-400 hover:bg-saffron-500 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1"><i class="fa-solid fa-pen"></i> මාතිකා නම වෙනස් කරන්න</button>
 <button onclick="navigateBackToCategory()" class="text-xs text-amber-900 dark:text-saffron-200 bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-700 hover:bg-amber-50 px-3 py-1.5 rounded-lg shadow-sm"><i class="fa-solid fa-arrow-left"></i> ලැයිස්තුවට</button>
 </div>
 </div>
 <div class="flex items-center justify-between">
 <h3 class="text-sm font-semibold text-amber-900 dark:text-saffron-300 flex items-center gap-2"><i class="fa-solid fa-layer-group text-saffron-600"></i> මාතිකා පද සහ ස්වරූපාර්ථ තෝරන්න:</h3>
-<button onclick="openAddPadaModal()" class="text-xs text-white bg-maroon-900 hover:bg-maroon-800 font-bold px-3 py-1.5 rounded-lg shadow flex items-center gap-1"><i class="fa-solid fa-plus"></i> නව පදයක් එක් කරන්න</button>
 </div>
 <div id="pada-tabs-container" class="grid grid-cols-1 gap-2"></div>
 <div id="pada-detail-breakdown" class="hidden flex flex-col space-y-4 pt-2 w-full">
 <div class="bg-maroon-900 text-amber-50 p-4 rounded-xl shadow border border-saffron-500/40 relative w-full">
 <div class="flex justify-between items-start">
 <div><div class="text-xs text-saffron-300 font-medium mb-1">තෝරාගත් මාතිකා පදය</div><h3 id="current-pada-name" class="text-lg font-bold text-saffron-100"></h3></div>
-<div class="flex items-center gap-2">
-<button onclick="openEditModal()" class="px-3 py-1.5 bg-saffron-500 hover:bg-saffron-600 text-maroon-950 font-bold text-xs rounded-lg shadow transition-colors flex items-center gap-1.5"><i class="fa-solid fa-pen-to-square"></i> ස්වරූපාර්ථ සංස්කරණය</button>
-<button onclick="deleteCurrentPada()" class="px-2 py-1.5 bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs rounded-lg shadow transition-colors"><i class="fa-solid fa-trash"></i></button>
 <button id="bookmark-toggle-btn" onclick="toggleCurrentBookmark()" class="text-2xl text-amber-300 hover:text-saffron-400 transition-transform active:scale-95 p-1"><i id="bookmark-icon" class="fa-regular fa-bookmark"></i></button>
-</div>
 </div>
 <p id="current-pada-desc" class="text-xs text-amber-200/90 mt-2"></p>
 <div class="mt-3 pt-3 border-t border-saffron-500/30">
@@ -227,22 +210,22 @@ navigator.serviceWorker.register('sw.js')
 </div>
 </div>
 <div class="flex border-b border-amber-200 dark:border-slate-700 space-x-1 space-x-reverse overflow-x-auto hide-scrollbar w-full">
-<button onclick="switchTab('skandha')" id="tab-btn-skandha" class="tab-btn border-b-2 border-saffron-600 text-saffron-700 dark:text-saffron-400 font-bold px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-cubes text-xs"></i> ස්කන්ධ</button>
-<button onclick="switchTab('ayatana')" id="tab-btn-ayatana" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-door-open text-xs"></i> ආයතන</button>
-<button onclick="switchTab('dhatu')" id="tab-btn-dhatu" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-circle-nodes text-xs"></i> ධාතු</button>
-<button onclick="switchTab('sathya')" id="tab-btn-sathya" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-scale-balanced text-xs"></i> සත්‍ය</button>
+<button onclick="switchTab('skandha')" id="tab-btn-skandha" class="tab-btn border-b-2 border-saffron-600 text-saffron-700 dark:text-saffron-400 font-bold px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-cubes text-xs"></i> ස්කන්ධ (5)</button>
+<button onclick="switchTab('ayatana')" id="tab-btn-ayatana" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-door-open text-xs"></i> ආයතන (12)</button>
+<button onclick="switchTab('dhatu')" id="tab-btn-dhatu" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-circle-nodes text-xs"></i> ධාතු (18)</button>
+<button onclick="switchTab('sathya')" id="tab-btn-sathya" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap"><i class="fa-solid fa-scale-balanced text-xs"></i> සත්‍ය (4)</button>
 </div>
 <div id="tab-contents" class="w-full bg-white dark:bg-slate-800 rounded-2xl p-5 border border-amber-200 dark:border-slate-700 shadow-sm">
 <div id="panel-skandha" class="tab-panel space-y-3">
-<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ස්කන්ධ විශ්ලේෂණය:</span><span id="skandha-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
+<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">පරමාර්ථ ධර්ම ස්කන්ධ 5 ට බෙදීම:</span><span id="skandha-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
 <div class="pt-2 text-sm" id="skandha-list"></div>
 </div>
 <div id="panel-ayatana" class="tab-panel hidden space-y-3">
-<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ආයතන විශ්ලේෂණය:</span><span id="ayatana-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
+<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">පරමාර්ථ ධර්ම ආයතන 12 ට බෙදීම:</span><span id="ayatana-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
 <div class="pt-2 text-sm" id="ayatana-list"></div>
 </div>
 <div id="panel-dhatu" class="tab-panel hidden space-y-3">
-<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ධාතු විශ්ලේෂණය:</span><span id="dhatu-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
+<div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700"><span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">පරමාර්ථ ධර්ම ධාතු 18 ට බෙදීම:</span><span id="dhatu-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span></div>
 <div class="pt-2 text-sm" id="dhatu-list"></div>
 </div>
 <div id="panel-sathya" class="tab-panel hidden space-y-3">
@@ -274,67 +257,9 @@ navigator.serviceWorker.register('sw.js')
 </form>
 </div>
 </div>
-
-<div id="edit-sabbatika-breakdown-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-<div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
-<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3"><h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">ස්කන්ධ, ආයතන, ධාතු, සත්‍ය සංස්කරණය</h3><button onclick="closeEditSabbatikaBreakdownModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button></div>
-<form id="edit-sabbatika-breakdown-form" onsubmit="saveSabbatikaBreakdownData(event)" class="space-y-3 text-sm">
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ස්කන්ධ විස්තර (එක පේළියකට එකක්)</label><textarea id="edit-sab-skandha-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea></div>
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ආයතන විස්තර (එක පේළියකට එකක්)</label><textarea id="edit-sab-ayatana-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea></div>
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ධාතු විස්තර (එක පේළියකට එකක්)</label><textarea id="edit-sab-dhatu-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea></div>
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">සත්‍ය විස්තර (එක පේළියකට එකක්)</label><textarea id="edit-sab-sathya-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea></div>
-<div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeEditSabbatikaBreakdownModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button><button type="submit" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow">සුරකින්න</button></div>
-</form>
-</div>
-</div>
-
-<div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-<div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
-<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3"><h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">ස්වරූපාර්ථ සහ දත්ත සංස්කරණය</h3><button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button></div>
-<form id="edit-form" onsubmit="savePadaData(event)" class="space-y-3 text-sm">
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">පදයේ නම</label><input type="text" id="edit-pada-name" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 font-bold"></div>
-<div><label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">කෙටි විස්තරය</label><input type="text" id="edit-desc" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700"></div>
-<div><label class="block font-semibold text-saffron-700 dark:text-saffron-300 mb-1"><i class="fa-solid fa-book-bookmark"></i> ස්වරූපාර්ථ</label><textarea id="edit-swaroopartha" rows="10" class="w-full p-2.5 rounded-lg border border-saffron-400/50 dark:bg-slate-900 text-xs"></textarea></div>
-<div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button><button type="submit" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow">සුරකින්න</button></div>
-</form>
-</div>
-</div>
-
-<div id="edit-matika-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-<div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
-<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3"><h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">මාතිකා නම වෙනස් කරන්න</h3><button onclick="closeEditMatikaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button></div>
-<div class="space-y-3 text-sm">
-<input type="text" id="edit-matika-title-input" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold">
-<div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeEditMatikaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button><button type="button" onclick="saveMatikaTitleData()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">යාවත්කාලීන කරන්න</button></div>
-</div>
-</div>
-</div>
-
-<div id="add-matika-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-<div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
-<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3"><h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">නව මාතිකාවක් එක් කරන්න</h3><button onclick="closeAddMatikaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button></div>
-<div class="space-y-3 text-sm">
-<input type="text" id="new-matika-title" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold" placeholder="මාතිකා නම">
-<div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeAddMatikaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button><button type="button" onclick="saveNewMatika()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">එක් කරන්න</button></div>
-</div>
-</div>
-</div>
-
-<div id="add-pada-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-<div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
-<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3"><h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">නව මාතිකා පදයක් එක් කරන්න</h3><button onclick="closeAddPadaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button></div>
-<div class="space-y-3 text-sm">
-<input type="text" id="new-pada-name" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold" placeholder="පදයේ නම">
-<input type="text" id="new-pada-desc" class="w-full p-2.5 rounded-lg border dark:bg-slate-900" placeholder="විස්තරය">
-<textarea id="new-swaroopartha" rows="3" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 text-xs" placeholder="ස්වරූපාර්ථය"></textarea>
-<div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeAddPadaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button><button type="button" onclick="saveNewPada()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">එක් කරන්න</button></div>
-</div>
-</div>
-</div>
 </main>
 
 <script>
-// ============ HELPER FUNCTIONS ============
 function makeSkandha(rupa, vedana, sanna, sankhara, vinnana) {
 return [
 { num: 1, name: 'රූපක්ඛන්ධෝ', value: rupa },
@@ -391,161 +316,69 @@ return [
 ];
 }
 
-// ============ SUTTANTA DATA ============
 var suttantaFullData = [
 { title: 'විජ්ජාහාගී දුකය', padas: [
-{ name: 'විජ්ජාහාගිනෝ ධම්මා', desc: 'විද්‍යාවෙන් බෙදන ලද ධර්ම.', svartha: 'විජ්ජාහාගී පදයේ ස්වරූපාර්ථය: විද්‍යාවෙන් බෙදන ලද ධර්මයෝ ය. ලෝකෝත්තර මාර්ග සිත් 4 සහ ඵල සිත් 4 හි ඇති අමෝහ චෛතසිකය විජ්ජා නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 35', 'ලෝකෝත්තර සිත් 8'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('-', '-', 'ලෝකෝත්තර ඵල සිත් 4', 'ලෝකෝත්තර මාර්ග සිත් 4') },
-{ name: 'අවිජ්ජාහාගිනෝ ධම්මා', desc: 'අවිද්‍යාවෙන් බෙදන ලද ධර්ම.', svartha: 'අවිජ්ජාහාගී පදයේ ස්වරූපාර්ථය: අවිද්‍යාවෙන් බෙදන ලද ධර්මයෝ ය. මෝහ චෛතසිකය අවිද්‍යා නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', 'මෝහ චෛතසිකය', '-', '-') }
+{ name: 'විජ්ජාහාගිනෝ ධම්මා', desc: 'විද්‍යාවෙන් බෙදන ලද ධර්ම.', svartha: 'විජ්ජාහාගී පදයේ ස්වරූපාර්ථය: විද්‍යාවෙන් බෙදන ලද ධර්මයෝ ය. ලෝකෝත්තර මාර්ග සිත් 4 සහ ඵල සිත් 4 හි ඇති අමෝහ චෛතසිකය විජ්ජා නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 35', 'ලෝකෝත්තර සිත් 8'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-', '-', 'ලෝකෝත්තර ඵල සිත් 4', 'ලෝකෝත්තර මාර්ග සිත් 4') },
+{ name: 'අවිජ්ජාහාගිනෝ ධම්මා', desc: 'අවිද්‍යාවෙන් බෙදන ලද ධර්ම.', svartha: 'අවිජ්ජාහාගී පදයේ ස්වරූපාර්ථය: අවිද්‍යාවෙන් බෙදන ලද ධර්මයෝ ය. මෝහ චෛතසිකය අවිද්‍යා නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'මෝහ චෛතසිකය', '-', '-') }
 ]},
 { title: 'විජ්ජුපම දුකය', padas: [
-{ name: 'වජ්ජං ධම්මං වජ්ජතො පස්සති', desc: 'වජ්ජ ධර්ම වජ්ජ වශයෙන් දකී.', svartha: 'වජ්ජ ධර්මයන් වජ්ජ වශයෙන් දකින්නා වූ ධර්ම. පඤ්චාවරණය සහ දස අකුසල කර්ම පථ වජ්ජ ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 28', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', '-', '-', '-') },
-{ name: 'අවජ්ජං ධම්මං අවජ්ජතො පස්සති', desc: 'අවජ්ජ ධර්ම අවජ්ජ වශයෙන් දකී.', svartha: 'අවජ්ජ ධර්මයන් අවජ්ජ වශයෙන් දකින්නා වූ ධර්ම. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20 අවජ්ජ ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
+{ name: 'වජ්ජං ධම්මං වජ්ජතො පස්සති', desc: 'වජ්ජ ධර්ම වජ්ජ වශයෙන් දකී.', svartha: 'වජ්ජ ධර්මයන් වජ්ජ වශයෙන් දකින්නා වූ ධර්ම. පඤ්චාවරණය සහ දස අකුසල කර්ම පථ වජ්ජ ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 28', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', '-', '-', '-') },
+{ name: 'අවජ්ජං ධම්මං අවජ්ජතො පස්සති', desc: 'අවජ්ජ ධර්ම අවජ්ජ වශයෙන් දකී.', svartha: 'අවජ්ජ ධර්මයන් අවජ්ජ වශයෙන් දකින්නා වූ ධර්ම. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20 අවජ්ජ ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
 ]},
 { title: 'බාල දුකය', padas: [
-{ name: 'බාලා ධම්මා', desc: 'බාලයන්ට අයත් ධර්ම.', svartha: 'බාල පුද්ගලයන්ට අයත් වූ ධර්ම. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 බාල ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
-{ name: 'පණ්ඩිතා ධම්මා', desc: 'පණ්ඩිතයන්ට අයත් ධර්ම.', svartha: 'පණ්ඩිත පුද්ගලයන්ට අයත් වූ ධර්ම. කුසල් සිත් 21 සහ තත් සම්ප්‍රයුක්ත චෛතසික 38 පණ්ඩිත ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') }
+{ name: 'බාලා ධම්මා', desc: 'බාලයන්ට අයත් ධර්ම.', svartha: 'බාල පුද්ගලයන්ට අයත් වූ ධර්ම. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 බාල ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
+{ name: 'පණ්ඩිතා ධම්මා', desc: 'පණ්ඩිතයන්ට අයත් ධර්ම.', svartha: 'පණ්ඩිත පුද්ගලයන්ට අයත් වූ ධර්ම. කුසල් සිත් 21 සහ තත් සම්ප්‍රයුක්ත චෛතසික 38 පණ්ඩිත ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') }
 ]},
 { title: 'කණ්හ දුකය', padas: [
-{ name: 'කණ්හා ධම්මා', desc: 'කළු (අකුසල) ධර්ම.', svartha: 'කණ්හ ධර්ම යනු කළු ධර්ම ය. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 කණ්හ ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
-{ name: 'සුක්කා ධම්මා', desc: 'සුදු (කුසල) ධර්ම.', svartha: 'සුක්ක ධර්ම යනු සුදු ධර්ම ය. කුසල් සිත් 21 සහ තත් සම්ප්‍රයුක්ත චෛතසික 38 සුක්ක ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') }
+{ name: 'කණ්හා ධම්මා', desc: 'කළු (අකුසල) ධර්ම.', svartha: 'කණ්හ ධර්ම යනු කළු ධර්ම ය. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 කණ්හ ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
+{ name: 'සුක්කා ධම්මා', desc: 'සුදු (කුසල) ධර්ම.', svartha: 'සුක්ක ධර්ම යනු සුදු ධර්ම ය. කුසල් සිත් 21 සහ තත් සම්ප්‍රයුක්ත චෛතසික 38 සුක්ක ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') }
 ]},
 { title: 'තපනීය දුකය', padas: [
-{ name: 'තපනීයා ධම්මා', desc: 'තවන (දවන) ධර්ම.', svartha: 'තපනීය ධර්ම යනු තවන දවන ස්වභාවය ඇති ධර්ම ය. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 තපනීය ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
-{ name: 'අතපනීයා ධම්මා', desc: 'නොතවන ධර්ම.', svartha: 'අතපනීය ධර්ම යනු නොතවන ස්වභාවය ඇති ධර්ම ය. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20 සහ නිර්වාණය අතපනීය ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
+{ name: 'තපනීයා ධම්මා', desc: 'තවන (දවන) ධර්ම.', svartha: 'තපනීය ධර්ම යනු තවන දවන ස්වභාවය ඇති ධර්ම ය. අකුසල් සිත් 12 සහ තත් සම්ප්‍රයුක්ත චෛතසික 27 තපනීය ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
+{ name: 'අතපනීයා ධම්මා', desc: 'නොතවන ධර්ම.', svartha: 'අතපනීය ධර්ම යනු නොතවන ස්වභාවය ඇති ධර්ම ය. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20 සහ නිර්වාණය අතපනීය ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
 ]},
 { title: 'අධිවචන දුකය', padas: [
-{ name: 'සඅධිවචනා ධම්මා', desc: 'අධිවචන සහිත ධර්ම.', svartha: 'සඅධිවචන ධර්ම යනු අධිවචන (නාම පණ්ණත්ති) සහිත ධර්ම ය. සියලු සංස්කෘත ධර්ම සඅධිවචන ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
-{ name: 'නිරධිවචනා ධම්මා', desc: 'අධිවචන රහිත ධර්ම.', svartha: 'නිරධිවචන ධර්ම යනු අධිවචන (නාම පණ්ණත්ති) රහිත ධර්ම ය. නිර්වාණය නිරධිවචන ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'නැත', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('-', '-', 'නිර්වාණය', '-') }
+{ name: 'සඅධිවචනා ධම්මා', desc: 'අධිවචන සහිත ධර්ම.', svartha: 'සඅධිවචන ධර්ම යනු අධිවචන (නාම පණ්ණත්ති) සහිත ධර්ම ය. සියලු සංස්කෘත ධර්ම සඅධිවචන ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
+{ name: 'නිරධිවචනා ධම්මා', desc: 'අධිවචන රහිත ධර්ම.', svartha: 'නිරධිවචන ධර්ම යනු අධිවචන (නාම පණ්ණත්ති) රහිත ධර්ම ය. නිර්වාණය නිරධිවචන ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'නැත', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-', '-', 'නිර්වාණය', '-') }
 ]},
 { title: 'තිරූත්තරි දුකය', padas: [
-{ name: 'තිරූත්තරිනෝ ධම්මා', desc: 'තෙරුවන් සරණ ගිය ධර්ම.', svartha: 'තිරූත්තරි ධම්ම යනු තෙරුවන් සරණ ගිය ධර්ම ය. සෝවාන් මාර්ග සිත් ඇති පුද්ගලයන්ගේ කුසල් සිත් 21 තිරූත්තරි ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
-{ name: 'අතිරූත්තරිනෝ ධම්මා', desc: 'තෙරුවන් සරණ නොගිය ධර්ම.', svartha: 'අතිරූත්තරි ධම්ම යනු තෙරුවන් සරණ නොගිය ධර්ම ය. පෘථග්ජන පුද්ගලයන්ගේ සියලු සිත් සහ අර්හත් ඵල සිත් අතිරූත්තරි ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', '-') }
+{ name: 'තිරූත්තරිනෝ ධම්මා', desc: 'තෙරුවන් සරණ ගිය ධර්ම.', svartha: 'තිරූත්තරි ධම්ම යනු තෙරුවන් සරණ ගිය ධර්ම ය. සෝවාන් මාර්ග සිත් ඇති පුද්ගලයන්ගේ කුසල් සිත් 21 තිරූත්තරි ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
+{ name: 'අතිරූත්තරිනෝ ධම්මා', desc: 'තෙරුවන් සරණ නොගිය ධර්ම.', svartha: 'අතිරූත්තරි ධම්ම යනු තෙරුවන් සරණ නොගිය ධර්ම ය. පෘථග්ජන පුද්ගලයන්ගේ සියලු සිත් සහ අර්හත් ඵල සිත් අතිරූත්තරි ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', '-') }
 ]},
 { title: 'පඤ්ඤත්ති දුකය', padas: [
-{ name: 'පඤ්ඤත්ති ධම්මා', desc: 'පණ්ණත්ති ධර්ම.', svartha: 'පඤ්ඤත්ති ධම්ම යනු පණ්ණත්ති (සංඥා, නාම) ධර්ම ය. සත්ත්ව පණ්ණත්ති, සංඛාර පණ්ණත්ති ආදිය පඤ්ඤත්ති ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'නැත', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('-', '-', '-', '-') },
-{ name: 'නොපඤ්ඤත්ති ධම්මා', desc: 'පණ්ණත්ති නොවන ධර්ම.', svartha: 'නොපඤ්ඤත්ති ධම්ම යනු පණ්ණත්ති නොවන පරමාර්ථ ධර්ම ය. සිත් 89, චෛතසික 52, රූප 28, නිර්වාණය නොපඤ්ඤත්ති ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', 'ලෝකෝත්තර මාර්ග සිත් 4') }
+{ name: 'පඤ්ඤත්ති ධම්මා', desc: 'පණ්ණත්ති ධර්ම.', svartha: 'පඤ්ඤත්ති ධම්ම යනු පණ්ණත්ති (සංඥා, නාම) ධර්ම ය. සත්ත්ව පණ්ණත්ති, සංඛාර පණ්ණත්ති ආදිය පඤ්ඤත්ති ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'නැත', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-', '-', '-', '-') },
+{ name: 'නොපඤ්ඤත්ති ධම්මා', desc: 'පණ්ණත්ති නොවන ධර්ම.', svartha: 'නොපඤ්ඤත්ති ධම්ම යනු පණ්ණත්ති නොවන පරමාර්ථ ධර්ම ය. සිත් 89, චෛතසික 52, රූප 28, නිර්වාණය නොපඤ්ඤත්ති ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 89'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', 'ලෝකෝත්තර මාර්ග සිත් 4') }
 ]},
 { title: 'තාමරූප දුකය', padas: [
-{ name: 'තාමරූපා ධම්මා', desc: 'නිරයට ගෙන යන ධර්ම.', svartha: 'තාමරූප ධර්ම යනු නිරයට ගෙන යන ස්වභාවය ඇති ධර්ම ය. පඤ්චානන්තර්ය කර්ම සහ නියත මිථ්‍යාදෘෂ්ටිය තාමරූප ධර්ම නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අකුසල් සිත් 12', 'මිච්ඡාදිට්ඨි', '-', '-') },
-{ name: 'න තාමරූපා ධම්මා', desc: 'නිරයට නොගෙන යන ධර්ම.', svartha: 'න තාමරූප ධර්ම යනු නිරයට නොගෙන යන ස්වභාවය ඇති ධර්ම ය. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20, රූප 28, නිර්වාණය න තාමරූප ධර්ම නම් වේ.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
+{ name: 'තාමරූපා ධම්මා', desc: 'නිරයට ගෙන යන ධර්ම.', svartha: 'තාමරූප ධර්ම යනු නිරයට ගෙන යන ස්වභාවය ඇති ධර්ම ය. පඤ්චානන්තර්ය කර්ම සහ නියත මිථ්‍යාදෘෂ්ටිය තාමරූප ධර්ම නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'මිච්ඡාදිට්ඨි', '-', '-') },
+{ name: 'න තාමරූපා ධම්මා', desc: 'නිරයට නොගෙන යන ධර්ම.', svartha: 'න තාමරූප ධර්ම යනු නිරයට නොගෙන යන ස්වභාවය ඇති ධර්ම ය. කුසල් සිත් 21, විපාක 36, ක්‍රියා 20, රූප 28, නිර්වාණය න තාමරූප ධර්ම නම් වේ.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'සිත් 77'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
 ]},
 { title: 'අවිජ්ජා දුකය', padas: [
-{ name: 'අවිජ්ජා ධම්මා', desc: 'අවිද්‍යා ධර්ම.', svartha: 'අවිජ්ජා ධම්ම යනු අවිද්‍යාව ය. මෝහ චෛතසිකය අවිජ්ජා නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (මෝහ)', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('-', 'මෝහ චෛතසිකය', '-', '-') },
-{ name: 'විජ්ජා ධම්මා', desc: 'විද්‍යා ධර්ම.', svartha: 'විජ්ජා ධම්ම යනු විද්‍යාව ය. අමෝහ චෛතසිකය විජ්ජා නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (අමෝහ)', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('-', '-', '-', 'අමෝහ චෛතසිකය') }
+{ name: 'අවිජ්ජා ධම්මා', desc: 'අවිද්‍යා ධර්ම.', svartha: 'අවිජ්ජා ධම්ම යනු අවිද්‍යාව ය. මෝහ චෛතසිකය අවිජ්ජා නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (මෝහ)', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-', 'මෝහ චෛතසිකය', '-', '-') },
+{ name: 'විජ්ජා ධම්මා', desc: 'විද්‍යා ධර්ම.', svartha: 'විජ්ජා ධම්ම යනු විද්‍යාව ය. අමෝහ චෛතසිකය විජ්ජා නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (අමෝහ)', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-', '-', '-', 'අමෝහ චෛතසිකය') }
 ]},
 { title: 'භවදිට්ඨි දුකය', padas: [
-{ name: 'භවදිට්ඨි ධම්මා', desc: 'භව දෘෂ්ටි ධර්ම.', svartha: 'භවදිට්ඨි ධම්ම යනු භවය පිළිබඳ දෘෂ්ටිය ය. සස්සත දිට්ඨි සහ උච්ඡේද දිට්ඨි භවදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
-{ name: 'අභවදිට්ඨි ධම්මා', desc: 'අභව දෘෂ්ටි ධර්ම.', svartha: 'අභවදිට්ඨි ධම්ම යනු අභවය පිළිබඳ දෘෂ්ටිය ය. උච්ඡේද දෘෂ්ටිය අභවදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
+{ name: 'භවදිට්ඨි ධම්මා', desc: 'භව දෘෂ්ටි ධර්ම.', svartha: 'භවදිට්ඨි ධම්ම යනු භවය පිළිබඳ දෘෂ්ටිය ය. සස්සත දිට්ඨි සහ උච්ඡේද දිට්ඨි භවදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
+{ name: 'අභවදිට්ඨි ධම්මා', desc: 'අභව දෘෂ්ටි ධර්ම.', svartha: 'අභවදිට්ඨි ධම්ම යනු අභවය පිළිබඳ දෘෂ්ටිය ය. උච්ඡේද දෘෂ්ටිය අභවදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
 ]},
 { title: 'සස්සතදිට්ඨි දුකය', padas: [
-{ name: 'සස්සතදිට්ඨි ධම්මා', desc: 'ශාශ්වත දෘෂ්ටි ධර්ම.', svartha: 'සස්සතදිට්ඨි ධම්ම යනු ශාශ්වත දෘෂ්ටිය ය. ආත්මය සහ ලෝකය ශාශ්වත යැයි ගන්නා දෘෂ්ටිය සස්සතදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
-{ name: 'අසස්සතදිට්ඨි ධම්මා', desc: 'අශාශ්වත දෘෂ්ටි ධර්ම.', svartha: 'අසස්සතදිට්ඨි ධම්ම යනු අශාශ්වත දෘෂ්ටිය ය. ආත්මය සහ ලෝකය අශාශ්වත යැයි ගන්නා දෘෂ්ටිය අසස්සතදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
+{ name: 'සස්සතදිට්ඨි ධම්මා', desc: 'ශාශ්වත දෘෂ්ටි ධර්ම.', svartha: 'සස්සතදිට්ඨි ධම්ම යනු ශාශ්වත දෘෂ්ටිය ය. ආත්මය සහ ලෝකය ශාශ්වත යැයි ගන්නා දෘෂ්ටිය සස්සතදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
+{ name: 'අසස්සතදිට්ඨි ධම්මා', desc: 'අශාශ්වත දෘෂ්ටි ධර්ම.', svartha: 'අසස්සතදිට්ඨි ධම්ම යනු අශාශ්වත දෘෂ්ටිය ය. ආත්මය සහ ලෝකය අශාශ්වත යැයි ගන්නා දෘෂ්ටිය අසස්සතදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
 ]},
 { title: 'අන්තවාදිට්ඨි දුකය', padas: [
-{ name: 'අන්තවාදිට්ඨි ධම්මා', desc: 'අන්ත දෘෂ්ටි ධර්ම.', svartha: 'අන්තවාදිට්ඨි ධම්ම යනු අන්ත දෘෂ්ටිය ය. ලෝකය අන්ත සහිත යැයි ගන්නා දෘෂ්ටිය අන්තවාදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
-{ name: 'අනන්තවාදිට්ඨි ධම්මා', desc: 'අනන්ත දෘෂ්ටි ධර්ම.', svartha: 'අනන්තවාදිට්ඨි ධම්ම යනු අනන්ත දෘෂ්ටිය ය. ලෝකය අනන්ත යැයි ගන්නා දෘෂ්ටිය අනන්තවාදිට්ඨි නම් වේ.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
+{ name: 'අන්තවාදිට්ඨි ධම්මා', desc: 'අන්ත දෘෂ්ටි ධර්ම.', svartha: 'අන්තවාදිට්ඨි ධම්ම යනු අන්ත දෘෂ්ටිය ය. ලෝකය අන්ත සහිත යැයි ගන්නා දෘෂ්ටිය අන්තවාදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
+{ name: 'අනන්තවාදිට්ඨි ධම්මා', desc: 'අනන්ත දෘෂ්ටි ධර්ම.', svartha: 'අනන්තවාදිට්ඨි ධම්ම යනු අනන්ත දෘෂ්ටිය ය. ලෝකය අනන්ත යැයි ගන්නා දෘෂ්ටිය අනන්තවාදිට්ඨි නම් වේ.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
 ]},
 { title: 'පුබ්බන්තානුදිට්ඨි දුකය', padas: [
-{ name: 'පුබ්බන්තානුදිට්ඨි ධම්මා', desc: 'පූර්වාන්ත දෘෂ්ටි ධර්ම.', svartha: 'පුබ්බන්තානුදිට්ඨි ධම්ම යනු පූර්වාන්තය (අතීතය) පිළිබඳ දෘෂ්ටිය ය. අතීතය පිළිබඳ විවිධ දෘෂ්ටීහු පුබ්බන්තානුදිට්ඨි නම් වෙති.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
-{ name: 'අපරන්තානුදිට්ඨි ධම්මා', desc: 'අපරාන්ත දෘෂ්ටි ධර්ම.', svartha: 'අපරන්තානුදිට්ඨි ධම්ම යනු අපරාන්තය (අනාගතය) පිළිබඳ දෘෂ්ටිය ය. අනාගතය පිළිබඳ විවිධ දෘෂ්ටීහු අපරන්තානුදිට්ඨි නම් වෙති.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
+{ name: 'පුබ්බන්තානුදිට්ඨි ධම්මා', desc: 'පූර්වාන්ත දෘෂ්ටි ධර්ම.', svartha: 'පුබ්බන්තානුදිට්ඨි ධම්ම යනු පූර්වාන්තය (අතීතය) පිළිබඳ දෘෂ්ටිය ය. අතීතය පිළිබඳ විවිධ දෘෂ්ටීහු පුබ්බන්තානුදිට්ඨි නම් වෙති.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') },
+{ name: 'අපරන්තානුදිට්ඨි ධම්මා', desc: 'අපරාන්ත දෘෂ්ටි ධර්ම.', svartha: 'අපරන්තානුදිට්ඨි ධම්ම යනු අපරාන්තය (අනාගතය) පිළිබඳ දෘෂ්ටිය ය. අනාගතය පිළිබඳ විවිධ දෘෂ්ටීහු අපරන්තානුදිට්ඨි නම් වෙති.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'දිට්ඨිගත සිත් 4'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සිත් 4 + චෛතසික 25', 'දිට්ඨි චෛතසිකය', '-', '-') }
 ]},
 { title: 'අහිරික දුකය', padas: [
-{ name: 'අහිරිකා ධම්මා', desc: 'නිර්ලජ්ජා ධර්ම.', svartha: 'අහිරික ධම්ම යනු නිර්ලජ්ජාව ය. පව් කිරීමට ලැජ්ජා නොවන ස්වභාවය අහිරික නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (අහිරික)', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('අහිරික චෛතසිකය', '-', '-', '-') },
-{ name: 'හිරිකා ධම්මා', desc: 'ලජ්ජා ධර්ම.', svartha: 'හිරික ධම්ම යනු ලජ්ජාව ය. පව් කිරීමට ලැජ්ජා වන ස්වභාවය හිරික නම් වේ.',
-skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (හිරි)', 'නැත'),
-ayatana: makeAyatana(), dhatu: makeDhatu(),
-sathya: makeSathya('හිරි චෛතසිකය', '-', '-', 'හිරි චෛතසිකය') }
+{ name: 'අහිරිකා ධම්මා', desc: 'නිර්ලජ්ජා ධර්ම.', svartha: 'අහිරික ධම්ම යනු නිර්ලජ්ජාව ය. පව් කිරීමට ලැජ්ජා නොවන ස්වභාවය අහිරික නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (අහිරික)', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අහිරික චෛතසිකය', '-', '-', '-') },
+{ name: 'හිරිකා ධම්මා', desc: 'ලජ්ජා ධර්ම.', svartha: 'හිරික ධම්ම යනු ලජ්ජාව ය. පව් කිරීමට ලැජ්ජා වන ස්වභාවය හිරික නම් වේ.', skandha: makeSkandha('නැත', 'නැත', 'නැත', 'සංස්කාර චෛතසිකය (හිරි)', 'නැත'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('හිරි චෛතසිකය', '-', '-', 'හිරි චෛතසිකය') }
 ]}
 ];
 
-// ============ GOCHHAKA LIST ============
 var gochhakaList = [
 { id: 1, name: 'හේතු ගොච්ඡකය', count: 6 },{ id: 2, name: 'චුල්ලන්තර දුකය', count: 7 },{ id: 3, name: 'ආසව ගොච්ඡකය', count: 6 },
 { id: 4, name: 'සංයෝජන ගොච්ඡකය', count: 6 },{ id: 5, name: 'ගන්ථ ගොච්ඡකය', count: 6 },{ id: 6, name: 'ඕඝ ගොච්ඡකය', count: 6 },
@@ -570,18 +403,11 @@ var dukaNamesPerGochhaka = {
 13: ['දස්සනෙන පහාතබ්බ','භාවනාය පහාතබ්බ','දස්සනෙන පහාතබ්බහෙතුක','භාවනාය පහාතබ්බහෙතුක','සවිතක්ක','සවිචාර','සප්පීතික','පීතිසහගත','සුඛසහගත','උපෙක්ඛාසහගත','කාමාවචර','රූපාවචර','අරූපාවචර','පරියාපන්න','නිය්යානික','නියත','සඋත්තර','සරණ']
 };
 
-// ============ BUILD DATA ============
 function buildTikaData() {
 return [{ id: 'tika-1', number: 1, title: '1. කුසල තිකය', padas: [
-{ id: 'tika-1-p1', name: 'කුසලා ධම්මා', desc: 'කුසල් සිත් 21 සහ චෛතසික 38.', swaroopartha: 'කුසල් සිත් 21 සහ සම්ප්‍රයුක්ත චෛතසික 38.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'),
-ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
-{ id: 'tika-1-p2', name: 'අකුසලා ධම්මා', desc: 'අකුසල් සිත් 12 සහ චෛතසික 27.', swaroopartha: 'අකුසල් සිත් 12 සහ චෛතසික 27.',
-skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'),
-ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
-{ id: 'tika-1-p3', name: 'අබ්‍යාකතා ධම්මා', desc: 'විපාක 36, ක්‍රියා 20, රූප 28, නිර්වාණය.', swaroopartha: 'විපාක සිත් 36, ක්‍රියා සිත් 20, චෛතසික 38, රූප 28, නිර්වාණය.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'විපාක 36 + ක්‍රියා 20'),
-ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('විපාක 32 + ක්‍රියා 20 + රූප 28', '-', 'නිර්වාණය', '-') }
+{ id: 'tika-1-p1', name: 'කුසලා ධම්මා', desc: 'කුසල් සිත් 21 සහ චෛතසික 38.', swaroopartha: 'කුසල් සිත් 21 සහ සම්ප්‍රයුක්ත චෛතසික 38.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'කුසල් සිත් 21'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('ලෝකික කුසල් සිත් 17', '-', '-', 'ලෝකෝත්තර මාර්ග සිත් 4') },
+{ id: 'tika-1-p2', name: 'අකුසලා ධම්මා', desc: 'අකුසල් සිත් 12 සහ චෛතසික 27.', swaroopartha: 'අකුසල් සිත් 12 සහ චෛතසික 27.', skandha: makeSkandha('නැත', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 25', 'අකුසල් සිත් 12'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('අකුසල් සිත් 12', 'ලෝභ චෛතසිකය', '-', '-') },
+{ id: 'tika-1-p3', name: 'අබ්‍යාකතා ධම්මා', desc: 'විපාක 36, ක්‍රියා 20, රූප 28, නිර්වාණය.', swaroopartha: 'විපාක සිත් 36, ක්‍රියා සිත් 20, චෛතසික 38, රූප 28, නිර්වාණය.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 36', 'විපාක 36 + ක්‍රියා 20'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('විපාක 32 + ක්‍රියා 20 + රූප 28', '-', 'නිර්වාණය', '-') }
 ]}];
 }
 
@@ -594,12 +420,8 @@ var num = globalNum; var dName = names[i] || ('දුක ' + (i + 1));
 data.push({ id: 'duka-' + num, number: num, gochhakaId: g.id, gochhakaName: g.name,
 title: num + '. ' + dName + ' දුකය',
 padas: [
-{ id: 'duka-' + num + '-p1', name: dName + ' ධම්මා', desc: g.name + ' - ප්‍රථම පදය', swaroopartha: dName + ' පදයට අදාළ ස්වරූපාර්ථය.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 50', 'සිත් 89'),
-ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', 'ලෝකෝත්තර මාර්ග සිත් 4') },
-{ id: 'duka-' + num + '-p2', name: 'න ' + dName + ' ධම්මා', desc: g.name + ' - ද්විතීය පදය', swaroopartha: 'න ' + dName + ' පදයට අදාළ ස්වරූපාර්ථය.',
-skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 50', 'සිත් 89'),
-ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
+{ id: 'duka-' + num + '-p1', name: dName + ' ධම්මා', desc: g.name + ' - ප්‍රථම පදය', swaroopartha: dName + ' පදයට අදාළ ස්වරූපාර්ථය.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 50', 'සිත් 89'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', 'ලෝභ චෛතසිකය', 'නිර්වාණය', 'ලෝකෝත්තර මාර්ග සිත් 4') },
+{ id: 'duka-' + num + '-p2', name: 'න ' + dName + ' ධම්මා', desc: g.name + ' - ද්විතීය පදය', swaroopartha: 'න ' + dName + ' පදයට අදාළ ස්වරූපාර්ථය.', skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 50', 'සිත් 89'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('සියල්ල', '-', 'නිර්වාණය', '-') }
 ]});
 globalNum++;
 }
@@ -627,32 +449,22 @@ var sabbatikaData = JSON.parse(localStorage.getItem('app_sabbatika_data') || 'nu
 mainDesc: "සර්වසංග්‍රාහී සබ්බත්තික මාතිකා යනු සියලු තිකදුකයන්හි සමස්ත පද සහ පරමාර්ථ ධර්ම විශ්ලේෂණයයි.",
 subDesc: ["I. ආදි ලබ්ධික - ආරම්භයෙහි දක්වා ඇති පදයන් අනුව ලබන ලද නාමය","II. සබ්බ ලබ්ධික - සියලු පදයන් ම පදනම් කරගෙන ලබන ලද නාමය"],
 sappadesa: ["I. සප්පදේශ - තික පදයන්හි ඇතුළත් නොවූ පරමාර්ථ ධර්මයන් ඇති තික","II. නිප්පදේශ - තික පදයන්හි පරමාර්ථ ධර්මයන් සියල්ල ඇතුළත් වූ තික"],
-paramartha: ["1. චිත්තං - සිත් 89","2. චෛතසිකං - චෛතසික 52","3. රූපං - රූප 28","4. නිබ්බානං - නිර්වාණය"],
-skandha: null, ayatana: null, dhatu: null, sathya: null
+paramartha: ["1. චිත්තං - සිත් 89","2. චෛතසිකං - චෛතසික 52","3. රූපං - රූප 28","4. නිබ්බානං - නිර්වාණය"]
 };
 
-// ============ THEME ============
 function initTheme() {
 var isDark = localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
 if (isDark) { document.documentElement.classList.add('dark'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg'; }
 else { document.documentElement.classList.remove('dark'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg'; }
 }
 function toggleDarkMode() {
-if (document.documentElement.classList.contains('dark')) {
-document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
-document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg';
-} else {
-document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
-document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg';
-}
+if (document.documentElement.classList.contains('dark')) { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg'; }
+else { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg'; }
 }
 
-// ============ NAVIGATION ============
 function navigateTo(view) {
 currentState.view = view;
-['view-home','view-sabbatika','view-list','view-details','view-bookmarks'].forEach(function(id) {
-var el = document.getElementById(id); if (el) el.classList.add('hidden');
-});
+['view-home','view-sabbatika','view-list','view-details','view-bookmarks'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.add('hidden'); });
 document.getElementById('breadcrumb').classList.add('hidden');
 if (view === 'home') { document.getElementById('view-home').classList.remove('hidden'); currentState.category = null; }
 else if (view === 'sabbatika') { document.getElementById('view-sabbatika').classList.remove('hidden'); currentState.category = 'sabbatika'; updateBreadcrumb(); }
@@ -663,11 +475,8 @@ window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showMatikaList(category) {
-currentState.category = category;
-navigateTo('list');
-var titleEl = document.getElementById('list-title');
-var subEl = document.getElementById('list-subtitle');
-var fc = document.getElementById('gochhaka-filter-container');
+currentState.category = category; navigateTo('list');
+var titleEl = document.getElementById('list-title'), subEl = document.getElementById('list-subtitle'), fc = document.getElementById('gochhaka-filter-container');
 if (category === 'tika') { titleEl.textContent = 'තික මාතිකා (22)'; subEl.textContent = 'ත්‍රික කොටස් 22 කින් යුක්ත මාතිකා පද'; fc.classList.add('hidden'); }
 else if (category === 'duka') { titleEl.textContent = 'දුක මාතිකා (100)'; subEl.textContent = 'ගොච්ඡක 13 ට අයත් දුක මාතිකා 100'; fc.classList.remove('hidden'); }
 else if (category === 'suttanta') { titleEl.textContent = 'සුත්තන්ත මාතිකා'; subEl.textContent = 'සුත්තන්තික මාතිකා පද සහ ස්වරූපාර්ථ'; fc.classList.add('hidden'); }
@@ -678,11 +487,8 @@ function filterDukaByGochhaka(val) { currentState.activeGochhakaFilter = val; re
 
 function renderMatikaCards() {
 var container = document.getElementById('matika-cards-container');
-var cat = currentState.category;
-var list = matikaData[cat] || [];
-if (cat === 'duka' && currentState.activeGochhakaFilter !== 'all') {
-list = list.filter(function(item) { return item.gochhakaId === parseInt(currentState.activeGochhakaFilter); });
-}
+var cat = currentState.category; var list = matikaData[cat] || [];
+if (cat === 'duka' && currentState.activeGochhakaFilter !== 'all') { list = list.filter(function(item) { return item.gochhakaId === parseInt(currentState.activeGochhakaFilter); }); }
 if (list.length === 0) { container.innerHTML = '<p class="text-center text-sm text-slate-500 py-6">මාතිකා හමු නොවීය.</p>'; return; }
 container.innerHTML = list.map(function(item) {
 return '<div onclick="selectMatika(\'' + item.id + '\')" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-amber-200 dark:border-slate-700 shadow-sm hover:border-saffron-500 cursor-pointer transition-all flex items-center justify-between group"><div><div class="text-xs text-saffron-600 dark:text-saffron-400 font-bold mb-0.5">' + (item.gochhakaName || (cat === 'tika' ? 'තික මාතිකා' : 'සුත්තන්ත මාතිකා')) + '</div><h3 class="font-bold text-base text-maroon-900 dark:text-saffron-200">' + item.title + '</h3><p class="text-xs text-slate-500 mt-1">පද: ' + item.padas.length + '</p></div><i class="fa-solid fa-chevron-right text-amber-400"></i></div>';
@@ -693,15 +499,12 @@ function selectMatika(id) {
 var list = matikaData[currentState.category] || [];
 var found = list.find(function(x) { return x.id === id; });
 if (!found) return;
-currentState.selectedMatika = found;
-currentState.selectedPada = found.padas.length > 0 ? found.padas[0] : null;
-navigateTo('details');
-renderDetailsView();
+currentState.selectedMatika = found; currentState.selectedPada = found.padas.length > 0 ? found.padas[0] : null;
+navigateTo('details'); renderDetailsView();
 }
 
 function renderDetailsView() {
-var matika = currentState.selectedMatika;
-if (!matika) return;
+var matika = currentState.selectedMatika; if (!matika) return;
 document.getElementById('detail-category-tag').textContent = currentState.category.toUpperCase();
 document.getElementById('detail-matika-title').textContent = matika.title;
 var tc = document.getElementById('pada-tabs-container');
@@ -720,9 +523,7 @@ if (found) { currentState.selectedPada = found; renderDetailsView(); }
 
 function renderList(items) {
 if (!items || items.length === 0) return '<p class="text-xs text-slate-500 py-2">විස්තර නොමැත.</p>';
-return items.map(function(item) {
-return '<div class="breakdown-item"><span class="num">' + item.num + '.</span><span class="name">' + item.name + '</span><span class="value">' + item.value + '</span></div>';
-}).join('');
+return items.map(function(item) { return '<div class="breakdown-item"><span class="num">' + item.num + '.</span><span class="name">' + item.name + '</span><span class="value">' + item.value + '</span></div>'; }).join('');
 }
 
 function renderPadaBreakdown(pada) {
@@ -730,14 +531,10 @@ document.getElementById('pada-detail-breakdown').classList.remove('hidden');
 document.getElementById('current-pada-name').textContent = pada.name;
 document.getElementById('current-pada-desc').textContent = pada.desc || '';
 document.getElementById('current-swaroopartha-text').textContent = pada.swaroopartha || 'ස්වරූපාර්ථ නොමැත.';
-document.getElementById('skandha-count').textContent = (pada.skandha||[]).length + ' ක්';
-document.getElementById('skandha-list').innerHTML = renderList(pada.skandha);
-document.getElementById('ayatana-count').textContent = (pada.ayatana||[]).length + ' ක්';
-document.getElementById('ayatana-list').innerHTML = renderList(pada.ayatana);
-document.getElementById('dhatu-count').textContent = (pada.dhatu||[]).length + ' ක්';
-document.getElementById('dhatu-list').innerHTML = renderList(pada.dhatu);
-document.getElementById('sathya-count').textContent = (pada.sathya||[]).length + ' ක්';
-document.getElementById('sathya-list').innerHTML = renderList(pada.sathya);
+document.getElementById('skandha-count').textContent = (pada.skandha||[]).length + ' ක්'; document.getElementById('skandha-list').innerHTML = renderList(pada.skandha);
+document.getElementById('ayatana-count').textContent = (pada.ayatana||[]).length + ' ක්'; document.getElementById('ayatana-list').innerHTML = renderList(pada.ayatana);
+document.getElementById('dhatu-count').textContent = (pada.dhatu||[]).length + ' ක්'; document.getElementById('dhatu-list').innerHTML = renderList(pada.dhatu);
+document.getElementById('sathya-count').textContent = (pada.sathya||[]).length + ' ක්'; document.getElementById('sathya-list').innerHTML = renderList(pada.sathya);
 updateBookmarkIconState();
 }
 
@@ -761,10 +558,7 @@ else if (currentState.view === 'bookmarks') { sep1.classList.remove('hidden'); c
 else bc.classList.add('hidden');
 }
 
-function navigateBackToCategory() {
-if (currentState.category === 'sabbatika') navigateTo('sabbatika');
-else showMatikaList(currentState.category);
-}
+function navigateBackToCategory() { if (currentState.category === 'sabbatika') navigateTo('sabbatika'); else showMatikaList(currentState.category); }
 
 function renderSabbatikaView() {
 document.getElementById('sab-desc-main').textContent = sabbatikaData.mainDesc;
@@ -781,8 +575,8 @@ function switchSabbatikaTab(tab) {
 ['skandha','ayatana','dhatu','sathya'].forEach(function(t) {
 document.getElementById('sab-panel-' + t).classList.toggle('hidden', t !== tab);
 var btn = document.getElementById('sab-tab-' + t);
-if (t === tab) btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-bold text-xs bg-saffron-500 text-maroon-950 flex items-center justify-center gap-1';
-else btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 flex items-center justify-center gap-1';
+if (t === tab) btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-bold text-xs bg-saffron-500 text-maroon-950 transition-colors flex items-center justify-center gap-1';
+else btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1';
 });
 }
 
@@ -798,19 +592,14 @@ return '<div onclick="openBookmarkedItem(\'' + b.cat + '\',\'' + b.matikaId + '\
 function openBookmarkedItem(cat, matikaId, padaId) {
 currentState.category = cat;
 var matika = (matikaData[cat] || []).find(function(m) { return m.id === matikaId; });
-if (matika) {
-currentState.selectedMatika = matika;
-currentState.selectedPada = matika.padas.find(function(p) { return p.id === padaId; }) || matika.padas[0];
-navigateTo('details'); renderDetailsView();
-}
+if (matika) { currentState.selectedMatika = matika; currentState.selectedPada = matika.padas.find(function(p) { return p.id === padaId; }) || matika.padas[0]; navigateTo('details'); renderDetailsView(); }
 }
 
 function toggleCurrentBookmark() {
 if (!currentState.selectedMatika || !currentState.selectedPada) return;
 var p = currentState.selectedPada, m = currentState.selectedMatika, cat = currentState.category;
 var index = bookmarks.findIndex(function(b) { return b.padaId === p.id; });
-if (index > -1) bookmarks.splice(index, 1);
-else bookmarks.push({ cat: cat, matikaId: m.id, matikaTitle: m.title, padaId: p.id, padaName: p.name });
+if (index > -1) bookmarks.splice(index, 1); else bookmarks.push({ cat: cat, matikaId: m.id, matikaTitle: m.title, padaId: p.id, padaName: p.name });
 localStorage.setItem('matika_bookmarks', JSON.stringify(bookmarks));
 updateBookmarkIconState(); updateFavBadge();
 }
@@ -824,8 +613,7 @@ icon.className = exists ? 'fa-solid fa-bookmark text-saffron-500' : 'fa-regular 
 
 function updateFavBadge() {
 var badge = document.getElementById('fav-badge');
-if (bookmarks.length > 0) { badge.classList.remove('hidden'); badge.textContent = bookmarks.length; }
-else badge.classList.add('hidden');
+if (bookmarks.length > 0) { badge.classList.remove('hidden'); badge.textContent = bookmarks.length; } else badge.classList.add('hidden');
 }
 
 function clearSearch() {
@@ -859,28 +647,6 @@ return '<div onclick="openBookmarkedItem(\'' + r.cat + '\',\'' + r.matikaId + '\
 function openEditSabbatikaModal() { document.getElementById('edit-sab-desc-main').value = sabbatikaData.mainDesc; document.getElementById('edit-sab-desc-sub').value = sabbatikaData.subDesc.join('\n'); document.getElementById('edit-sab-sappadesa').value = sabbatikaData.sappadesa.join('\n'); document.getElementById('edit-sab-paramartha').value = sabbatikaData.paramartha.join('\n'); document.getElementById('edit-sabbatika-modal').classList.remove('hidden'); }
 function closeEditSabbatikaModal() { document.getElementById('edit-sabbatika-modal').classList.add('hidden'); }
 function saveSabbatikaData(e) { e.preventDefault(); sabbatikaData.mainDesc = document.getElementById('edit-sab-desc-main').value; sabbatikaData.subDesc = document.getElementById('edit-sab-desc-sub').value.split('\n').filter(Boolean); sabbatikaData.sappadesa = document.getElementById('edit-sab-sappadesa').value.split('\n').filter(Boolean); sabbatikaData.paramartha = document.getElementById('edit-sab-paramartha').value.split('\n').filter(Boolean); localStorage.setItem('app_sabbatika_data', JSON.stringify(sabbatikaData)); renderSabbatikaView(); closeEditSabbatikaModal(); }
-
-function openEditSabbatikaBreakdownModal() { document.getElementById('edit-sab-skandha-text').value = ''; document.getElementById('edit-sab-ayatana-text').value = ''; document.getElementById('edit-sab-dhatu-text').value = ''; document.getElementById('edit-sab-sathya-text').value = ''; document.getElementById('edit-sabbatika-breakdown-modal').classList.remove('hidden'); }
-function closeEditSabbatikaBreakdownModal() { document.getElementById('edit-sabbatika-breakdown-modal').classList.add('hidden'); }
-function saveSabbatikaBreakdownData(e) { e.preventDefault(); closeEditSabbatikaBreakdownModal(); }
-
-function openEditModal() { if (!currentState.selectedPada) return; var p = currentState.selectedPada; document.getElementById('edit-pada-name').value = p.name; document.getElementById('edit-desc').value = p.desc || ''; document.getElementById('edit-swaroopartha').value = p.swaroopartha || ''; document.getElementById('edit-modal').classList.remove('hidden'); }
-function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); }
-function savePadaData(e) { e.preventDefault(); if (!currentState.selectedPada) return; currentState.selectedPada.name = document.getElementById('edit-pada-name').value; currentState.selectedPada.desc = document.getElementById('edit-desc').value; currentState.selectedPada.swaroopartha = document.getElementById('edit-swaroopartha').value; renderDetailsView(); closeEditModal(); }
-
-function openEditMatikaModal() { if (!currentState.selectedMatika) return; document.getElementById('edit-matika-title-input').value = currentState.selectedMatika.title; document.getElementById('edit-matika-modal').classList.remove('hidden'); }
-function closeEditMatikaModal() { document.getElementById('edit-matika-modal').classList.add('hidden'); }
-function saveMatikaTitleData() { if (!currentState.selectedMatika) return; currentState.selectedMatika.title = document.getElementById('edit-matika-title-input').value; renderDetailsView(); closeEditMatikaModal(); }
-
-function openAddMatikaModal() { document.getElementById('add-matika-modal').classList.remove('hidden'); }
-function closeAddMatikaModal() { document.getElementById('add-matika-modal').classList.add('hidden'); }
-function saveNewMatika() { var title = document.getElementById('new-matika-title').value; if (!title) return; var cat = currentState.category; var newId = cat + '-' + Date.now(); var newItem = { id: newId, number: matikaData[cat].length + 1, title: title, padas: [] }; matikaData[cat].push(newItem); closeAddMatikaModal(); renderMatikaCards(); }
-
-function openAddPadaModal() { document.getElementById('add-pada-modal').classList.remove('hidden'); }
-function closeAddPadaModal() { document.getElementById('add-pada-modal').classList.add('hidden'); }
-function saveNewPada() { var name = document.getElementById('new-pada-name').value; var desc = document.getElementById('new-pada-desc').value; var swaroopartha = document.getElementById('new-swaroopartha').value; if (!name || !currentState.selectedMatika) return; var newPada = { id: 'pada-' + Date.now(), name: name, desc: desc, swaroopartha: swaroopartha, skandha: makeSkandha('-','-','-','-','-'), ayatana: makeAyatana(), dhatu: makeDhatu(), sathya: makeSathya('-','-','-','-') }; currentState.selectedMatika.padas.push(newPada); currentState.selectedPada = newPada; closeAddPadaModal(); renderDetailsView(); }
-
-function deleteCurrentPada() { if (!currentState.selectedMatika || !currentState.selectedPada) return; var padas = currentState.selectedMatika.padas; var index = padas.findIndex(function(p) { return p.id === currentState.selectedPada.id; }); if (index > -1) { padas.splice(index, 1); currentState.selectedPada = padas.length > 0 ? padas[0] : null; renderDetailsView(); } }
 
 window.addEventListener('DOMContentLoaded', function() { initTheme(); updateFavBadge(); renderSabbatikaView(); });
 </script>
