@@ -10,6 +10,7 @@
   "orientation": "portrait",
   "background_color": "#3f0a0c",
   "theme_color": "#3f0a0c",
+  "id": "/Abhidhamma-Matika/",
   "categories": [
     "education",
     "books",
@@ -17,49 +18,37 @@
   ],
   "icons": [
     {
-      "src": "72.png",
+      "src": "launchericon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "launchericon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "96.png",
+      "src": "launchericon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "144.png",
+      "src": "launchericon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "192.png",
+      "src": "launchericon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "256.png",
-      "sizes": "256x256",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "512.png",
+      "src": "launchericon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -73,7 +62,7 @@
       "url": "./index.html?view=tika",
       "icons": [
         {
-          "src": "96.png",
+          "src": "launchericon-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
@@ -86,7 +75,7 @@
       "url": "./index.html?view=duka",
       "icons": [
         {
-          "src": "96.png",
+          "src": "launchericon-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
@@ -99,7 +88,7 @@
       "url": "./index.html?view=bookmarks",
       "icons": [
         {
-          "src": "96.png",
+          "src": "launchericon-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
