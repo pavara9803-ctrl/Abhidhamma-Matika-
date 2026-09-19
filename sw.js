@@ -2,14 +2,23 @@
    අභිධර්ම මාතිකා අධ්‍යයනය - Service Worker
    ============================================================ */
 
-const CACHE_NAME = 'matika-cache-v1';
-const RUNTIME_CACHE = 'matika-runtime-v1';
+const CACHE_NAME = 'matika-cache-v2';
+const RUNTIME_CACHE = 'matika-runtime-v2';
 
 // මුලින්ම cache කළ යුතු core assets
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
+  // Icons (PWABuilder generate කළ)
+  './72.png',
+  './96.png',
+  './128.png',
+  './144.png',
+  './152.png',
+  './192.png',
+  './256.png',
+  './512.png',
   // External CDN resources
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@400;600;700&display=swap',
@@ -25,7 +34,6 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[SW] Pre-caching core assets');
-        // එක් එක් asset එක වෙන වෙනම cache කරන්න (එකක් fail වුනත් අනිත් ඒවා cache වෙන්න)
         return Promise.allSettled(
           PRECACHE_URLS.map((url) =>
             cache.add(url).catch((err) => {
@@ -62,14 +70,10 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle GET requests
   if (request.method !== 'GET') return;
-
-  // chrome-extension වැනි අනවශ්‍ය schemes අත්හැර දමන්න
   if (!url.protocol.startsWith('http')) return;
 
-  // ============ Navigation requests (HTML pages) ============
-  // Network-first strategy for HTML so users always get latest content
+  // Navigation (HTML)
   if (request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html')) {
     event.respondWith(
       fetch(request)
@@ -87,8 +91,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // ============ CDN & Static assets ============
-  // Cache-first strategy (CDN resources rarely change)
+  // CDN & Static assets
   const isCDN =
     url.hostname.includes('cdn.tailwindcss.com') ||
     url.hostname.includes('fonts.googleapis.com') ||
@@ -110,8 +113,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // ============ Same-origin assets (images, icons, etc.) ============
-  // Stale-while-revalidate strategy
+  // Same-origin assets (images, icons, etc.)
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetchPromise = fetch(request)
@@ -128,7 +130,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// ============ MESSAGE (skipWaiting control) ============
+// ============ MESSAGE ============
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
