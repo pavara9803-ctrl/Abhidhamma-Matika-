@@ -1,24 +1,87 @@
 {
   "name": "අභිධර්ම මාතිකා අධ්‍යයනය",
-  "short_name": "අභිධර්ම මාතිකා",
-  "description": "අභිධර්ම මාතිකා අධ්‍යයනය සහ ස්වරූපාර්ථ",
+  "short_name": "මාතිකා",
+  "description": "සර්වසංග්‍රාහී සබ්බත්තික මාතිකා, සුත්තන්ත මාතිකා, තික මාතිකා 22 සහ ගොච්ඡක 13 ට අයත් දුක මාතිකා 100 හි මාතිකා පදවල ස්වරූපාර්ථ, ස්කන්ධ, ආයතන, ධාතු සහ සත්‍ය බෙදීම් විස්තරාත්මකව අධ්‍යයනය කරන්න.",
+  "lang": "si",
+  "dir": "ltr",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#3f0a0c",
   "theme_color": "#3f0a0c",
-  "orientation": "portrait",
+  "categories": ["education", "books", "religion"],
   "icons": [
     {
-      "src": "launchericon-192x192.png",
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "launchericon-512x512.png",
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "තික මාතිකා",
+      "short_name": "තික",
+      "description": "තික මාතිකා 22 බලන්න",
+      "url": "./index.html?view=tika",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "දුක මාතිකා",
+      "short_name": "දුක",
+      "description": "දුක මාතිකා 100 බලන්න",
+      "url": "./index.html?view=duka",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "සුරැකි මාතිකා",
+      "short_name": "සුරැකි",
+      "description": "සුරැකි මාතිකා පද බලන්න",
+      "url": "./index.html?view=bookmarks",
+      "icons": [{ "src": "icons/icon-96x96.png", "sizes": "96x96" }]
     }
   ]
 }
