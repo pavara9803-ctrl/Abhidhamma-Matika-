@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>අභිධර්ම මාතිකා අධ්‍යයනය</title>
+
+<!-- ============ PWA META TAGS ============ -->
+<meta name="description" content="සර්වසංග්‍රාහී සබ්බත්තික මාතිකා, සුත්තන්ත මාතිකා, තික මාතිකා 22 සහ ගොච්ඡක 13 ට අයත් දුක මාතිකා 100 හි මාතිකා පදවල ස්වරූපාර්ථ, ස්කන්ධ, ආයතන, ධාතු සහ සත්‍ය බෙදීම් විස්තරාත්මකව අධ්‍යයනය කරන්න.">
+<meta name="theme-color" content="#3f0a0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="මාතිකා">
+<meta name="mobile-web-app-capable" content="yes">
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-96x96.png">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
@@ -29,9 +44,35 @@ body { font-family: 'Noto Serif Sinhala', 'Inter', serif; -webkit-tap-highlight-
 .dark .breakdown-item .num { color: #fcd34d; }
 .dark .breakdown-item .name { color: #fde68a; }
 .dark .breakdown-item .value { color: #fbbf24; }
+
+/* PWA Install Banner */
+#pwa-install-banner {
+position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+background: linear-gradient(135deg, #3f0a0c, #78350f);
+color: #fef3c7; padding: 12px 16px; border-radius: 16px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.4); border: 1px solid #f59e0b;
+display: none; align-items: center; gap: 12px; z-index: 100;
+max-width: calc(100% - 32px); width: 420px;
+animation: slideUp 0.4s ease-out;
+}
+#pwa-install-banner.show { display: flex; }
+@keyframes slideUp { from { transform: translate(-50%, 100px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+#pwa-install-banner button { white-space: nowrap; }
+
+/* Online/Offline status indicator */
+#offline-indicator {
+position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+background: #dc2626; color: white; text-align: center;
+padding: 6px; font-size: 12px; font-weight: bold;
+transform: translateY(-100%); transition: transform 0.3s;
+}
+#offline-indicator.show { transform: translateY(0); }
 </style>
 </head>
 <body class="h-full flex flex-col text-slate-800 dark:text-slate-100 bg-amber-50/30 dark:bg-slate-900 antialiased">
+
+<!-- Offline Indicator -->
+<div id="offline-indicator"><i class="fa-solid fa-wifi"></i> ඔබ දැන් නොබැඳි තත්ත්වයේ සිටී</div>
 
 <header class="sticky top-0 z-30 bg-maroon-900 text-amber-100 shadow-md border-b-2 border-saffron-500">
 <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -110,6 +151,18 @@ body { font-family: 'Noto Serif Sinhala', 'Inter', serif; -webkit-tap-highlight-
 <p class="text-xs text-amber-100/90">සුත්තන්තික මාතිකා පද සහ ස්වරූපාර්ථ</p>
 </button>
 </div>
+</div>
+
+<!-- PWA Features Info Card -->
+<div class="bg-white dark:bg-slate-800 border border-amber-200 dark:border-slate-700 rounded-2xl p-4 shadow-sm">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-8 h-8 rounded-lg bg-saffron-500/20 flex items-center justify-center text-saffron-600"><i class="fa-solid fa-mobile-screen-button"></i></div>
+<h3 class="font-bold text-sm text-maroon-900 dark:text-saffron-200">යෙදුම ලෙස ස්ථාපනය කරන්න</h3>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">මෙම යෙදුම ඔබගේ දුරකථනයේ හෝ පරිගණකයේ යෙදුමක් ලෙස ස්ථාපනය කර නොබැඳි තත්ත්වයේද කියවීමට හැකිය.</p>
+<button onclick="triggerInstall()" id="install-btn-main" class="w-full bg-gradient-to-r from-saffron-500 to-amber-600 text-maroon-950 font-bold py-2.5 rounded-xl text-sm shadow hover:shadow-lg transition-all flex items-center justify-center gap-2">
+<i class="fa-solid fa-download"></i> යෙදුම ස්ථාපනය කරන්න
+</button>
 </div>
 </section>
 
@@ -252,7 +305,121 @@ body { font-family: 'Noto Serif Sinhala', 'Inter', serif; -webkit-tap-highlight-
 </div>
 </div>
 
+<!-- ============ PWA INSTALL BANNER ============ -->
+<div id="pwa-install-banner">
+<div class="w-10 h-10 rounded-xl bg-saffron-500/20 border border-saffron-400 flex items-center justify-center shrink-0">
+<i class="fa-solid fa-dharmachakra text-saffron-300 text-xl"></i>
+</div>
+<div class="flex-1 min-w-0">
+<div class="font-bold text-sm text-saffron-200">අභිධර්ම මාතිකා</div>
+<div class="text-xs text-amber-100/80 truncate">යෙදුම ලෙස ස්ථාපනය කරන්න</div>
+</div>
+<button onclick="triggerInstall()" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow hover:bg-saffron-400">
+<i class="fa-solid fa-download"></i> ස්ථාපනය
+</button>
+<button onclick="dismissInstallBanner()" class="text-amber-200/60 hover:text-amber-100 p-1">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</div>
+
 <script>
+// ============ PWA INSTALL LOGIC ============
+var deferredPrompt = null;
+var installBannerDismissed = localStorage.getItem('pwa_banner_dismissed') === 'true';
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Banner එක පෙන්වන්න (dismissed නොකළ නම්)
+  if (!installBannerDismissed && !isStandalone()) {
+    setTimeout(function() {
+      document.getElementById('pwa-install-banner').classList.add('show');
+    }, 3000);
+  }
+});
+
+window.addEventListener('appinstalled', function() {
+  console.log('[PWA] App installed successfully');
+  deferredPrompt = null;
+  document.getElementById('pwa-install-banner').classList.remove('show');
+  installBannerDismissed = true;
+  localStorage.setItem('pwa_banner_dismissed', 'true');
+});
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.navigator.standalone === true;
+}
+
+function triggerInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+      console.log('[PWA] User choice:', choiceResult.outcome);
+      if (choiceResult.outcome === 'accepted') {
+        console.log('[PWA] User accepted install');
+      } else {
+        console.log('[PWA] User dismissed install');
+      }
+      deferredPrompt = null;
+      document.getElementById('pwa-install-banner').classList.remove('show');
+    });
+  } else {
+    // iOS හෝ දැනටමත් installed නම්
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+      alert('iOS Safari හි: Share (⬆️) බොත්තම → "Add to Home Screen" තෝරන්න.');
+    } else if (isStandalone()) {
+      alert('මෙම යෙදුම දැනටමත් ස්ථාපනය කර ඇත.');
+    } else {
+      alert('ඔබගේ බ්‍රවුසරයේ මෙනුවෙන් (⋮) "Install App" හෝ "Add to Home Screen" තෝරන්න.');
+    }
+  }
+}
+
+function dismissInstallBanner() {
+  document.getElementById('pwa-install-banner').classList.remove('show');
+  installBannerDismissed = true;
+  localStorage.setItem('pwa_banner_dismissed', 'true');
+}
+
+// ============ ONLINE/OFFLINE INDICATOR ============
+function updateOnlineStatus() {
+  var indicator = document.getElementById('offline-indicator');
+  if (navigator.onLine) {
+    indicator.classList.remove('show');
+  } else {
+    indicator.classList.add('show');
+  }
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+// ============ SERVICE WORKER REGISTRATION ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js')
+      .then(function(registration) {
+        console.log('[App] Service Worker registered:', registration.scope);
+        registration.addEventListener('updatefound', function() {
+          var newWorker = registration.installing;
+          newWorker.addEventListener('statechange', function() {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              console.log('[App] New version available');
+              if (confirm('නව අනුවාදයක් ලබාගත හැක. දැන් යාවත්කාලීන කරන්නද?')) {
+                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
+              }
+            }
+          });
+        });
+      })
+      .catch(function(error) {
+        console.warn('[App] Service Worker registration failed:', error);
+      });
+  });
+}
+
 // ============ GOCHHAKA DATA ============
 var gochhakaList = [
 { id: 1, name: 'හේතු ගොච්ඡකය', count: 6 },
@@ -640,7 +807,7 @@ sathya: makeSathya([{num:1,name:'දුක්ඛ සත්‍යය',value:'ස�
 skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'අනාගත සිත් 89'),
 ayatana: makeAyatana(), dhatu: makeDhatu(),
 sathya: makeSathya([{num:1,name:'දුක්ඛ සත්‍යය',value:'සියල්ල'},{num:2,name:'සමුදය සත්‍යය',value:'ලෝභ චෛතසිකය'},{num:3,name:'නිරෝධ සත්‍යය',value:'නිර්වාණය'},{num:4,name:'මාර්ග සත්‍යය',value:'-'}]) },
-{ name: 'පච්චුප්පන්නා ධම්මා', desc: 'වර්තමාන සිත් 89, චෛතසික 52, රූප 28.', svartha: 'වර්තමාන සිත් 89, චෛතසික 52, රූප 28.\n\nස්කන්ධ: රූප 28, වේදනා, සඤ්ඤා, සංඛාර (51), විඤ්ඤාණ (සිත් 89).\nආයතන: සියලු 12.\nධාතු: සියලු 18.\nආර්ය සතය: දුක්ඛ සතයය, නිරෝධ සතයය.',
+{ name: 'පච්චුප්පන්නා ධම්මා', desc: 'වර්තමාන සිත් 89, චෛතසික 52, රූප 28.', svartha: 'වර්තමාන සිත් 89, චෛතසික 52, රූප 28.\n\nස්කන්ධ: රූප 28, වේදනා, සඤ්ඤා, සංස්කාර (51), විඤ්ඤාණ (සිත් 89).\nආයතන: සියලු 12.\nධාතු: සියලු 18.\nආර්ය සතය: දුක්ඛ සතයය, නිරෝධ සතයය.',
 skandha: makeSkandha('රූප 28', 'වේදනා චෛතසිකය', 'සඤ්ඤා චෛතසිකය', 'සංඛාර චෛතසික 51', 'වර්තමාන සිත් 89'),
 ayatana: makeAyatana(), dhatu: makeDhatu(),
 sathya: makeSathya([{num:1,name:'දුක්ඛ සත්‍යය',value:'සියල්ල'},{num:2,name:'සමුදය සත්‍යය',value:'ලෝභ චෛතසිකය'},{num:3,name:'නිරෝධ සත්‍යය',value:'නිර්වාණය'},{num:4,name:'මාර්ග සත්‍යය',value:'-'}]) }
@@ -1094,7 +1261,13 @@ function openEditSabbatikaModal() { document.getElementById('edit-sab-desc-main'
 function closeEditSabbatikaModal() { document.getElementById('edit-sabbatika-modal').classList.add('hidden'); }
 function saveSabbatikaData(e) { e.preventDefault(); sabbatikaData.mainDesc = document.getElementById('edit-sab-desc-main').value; renderSabbatikaView(); closeEditSabbatikaModal(); }
 
-window.addEventListener('DOMContentLoaded', function() { initTheme(); updateFavBadge(); renderSabbatikaView(); });
+window.addEventListener('DOMContentLoaded', function() {
+  initTheme();
+  updateFavBadge();
+  renderSabbatikaView();
+  updateOnlineStatus();
+  console.log('[App] අභිධර්ම මාතිකා අධ්‍යයනය - පූරණය විය');
+});
 </script>
 </body>
 </html>
