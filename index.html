@@ -36,8 +36,19 @@ body { font-family: 'Noto Serif Sinhala', 'Inter', serif; -webkit-tap-highlight-
 <meta name="theme-color" content="#3f0a0c">
 <script>
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('sw.js')
-.then(() => console.log('Service Worker Registered Successfully'));
+  navigator.serviceWorker.register('sw.js')
+    .then(reg => {
+      console.log('Service Worker Registered Successfully');
+      reg.update();
+    });
+  
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
 }
 </script>
 </head>
