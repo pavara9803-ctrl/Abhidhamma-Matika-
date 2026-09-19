@@ -1,8 +1,11 @@
 {
   "name": "අභිධර්ම මාතිකා අධ්‍යයනය",
   "short_name": "අභිධර්ම මාතිකා",
+  "description": "අභිධර්ම මාතිකා පහසුවෙන් අධ්‍යයනය කිරීම සඳහා සකස් කරන ලද නොබැඳි (Offline) යෙදුමකි.",
+  "id": "/Abhidhamma-Matika-/",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#3f0a0c",
   "theme_color": "#3f0a0c",
   "icons": [
@@ -15,6 +18,14 @@
       "src": "launchericon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "launchericon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
