@@ -314,6 +314,36 @@ if ('serviceWorker' in navigator) {
 </div>
 </div>
 </div>
+  <!-- ⬇️ Edit Breakdown Modal - අලුතින් එකතු කරන්න ⬇️ -->
+<div id="edit-breakdown-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+<div class="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
+<div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+<h3 id="edit-breakdown-title" class="font-bold text-lg text-maroon-900 dark:text-saffron-200">දත්ත සංස්කරණය</h3>
+<button onclick="closeEditBreakdownModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+</div>
+
+<!-- Existing items list -->
+<div id="breakdown-items-list" class="space-y-2 max-h-64 overflow-y-auto border border-amber-200 dark:border-slate-700 rounded-lg p-2"></div>
+
+<!-- Add new item form -->
+<div class="bg-amber-50 dark:bg-slate-900 p-3 rounded-lg space-y-2">
+<h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200"><i class="fa-solid fa-plus-circle"></i> නව අයිතමයක් එකතු කරන්න</h4>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<input type="number" id="new-item-num" placeholder="අංකය" class="p-2 rounded-lg border text-sm dark:bg-slate-800 dark:border-slate-700" min="1">
+<input type="text" id="new-item-name" placeholder="නම (උදා: රූපක්ඛන්ධෝ)" class="p-2 rounded-lg border text-sm dark:bg-slate-800 dark:border-slate-700">
+<input type="text" id="new-item-value" placeholder="අගය (උදා: රූප 28)" class="p-2 rounded-lg border text-sm dark:bg-slate-800 dark:border-slate-700">
+</div>
+<button onclick="addNewBreakdownItem()" class="w-full text-xs text-white bg-saffron-600 hover:bg-saffron-700 font-bold px-3 py-2 rounded-lg"><i class="fa-solid fa-plus"></i> අයිතමය එකතු කරන්න</button>
+</div>
+
+<!-- Save and Cancel buttons -->
+<div class="flex justify-end gap-2 pt-2 border-t border-amber-200 dark:border-slate-700">
+<button onclick="closeEditBreakdownModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+<button onclick="saveBreakdownChanges()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow"><i class="fa-solid fa-save"></i> සියල්ල සුරකින්න</button>
+</div>
+</div>
+</div>
+<!-- ⬆️ Edit Breakdown Modal අවසානය ⬆️ -->
 </main>
 
 <script>
