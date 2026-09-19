@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="si" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අභිධර්ම මාතිකා අධ්‍යයනය (Abhidharma Matika App)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        saffron: {
+                            50: '#fffbeedb', 100: '#fef3c7', 200: '#fde68a', 300: '#fcd34d', 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706', 700: '#b45309', 800: '#92400e', 900: '#78350f', 950: '#451a03',
+                        },
+                        maroon: {
+                            700: '#701a1d', 800: '#581113', 900: '#3f0a0c', 950: '#260507',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Serif Sinhala', 'Segoe UI', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Noto Serif Sinhala', 'Inter', serif; -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+  
+  <!-- PWA Setup Links -->
+        <link rel="manifest" href="manifest.json">
+        <meta name="theme-color" content="#3f0a0c">
+        <script>
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+              .then(() => console.log('Service Worker Registered Successfully'));
+          }
+        </script>
+    </head>
+</head>
+<body class="h-full flex flex-col justify-between text-slate-800 dark:text-slate-100 bg-amber-50/30 dark:bg-slate-900 antialiased selection:bg-saffron-200 selection:text-maroon-900 transition-colors duration-200">
+
+<!-- Header -->
+<header class="sticky top-0 z-30 bg-maroon-900 text-amber-100 shadow-md border-b-2 border-saffron-500">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between relative">
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <button id="reset-home-btn" onclick="navigateTo('home')" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="මුල් පිටුව">
+                <i class="fa-solid fa-house text-lg"></i>
+            </button>
+            <button onclick="showBookmarks()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors relative" title="සුරැකි මාතිකා">
+                <i class="fa-solid fa-bookmark text-lg"></i>
+                <span id="fav-badge" class="hidden absolute -top-1 -right-1 bg-saffron-500 text-maroon-950 font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </button>
+        </div>
+
+        <div class="flex items-center space-x-2 space-x-reverse mx-auto text-center cursor-pointer" onclick="navigateTo('home')">
+            <div class="w-9 h-9 rounded-full bg-saffron-500/20 border border-saffron-400 flex items-center justify-center text-saffron-300 shadow-inner shrink-0">
+                <i class="fa-solid fa-dharmachakra text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-xl sm:text-2xl leading-tight text-saffron-100 tracking-wide">අභිධර්ම මාතිකා</h1>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <button id="theme-toggle-btn" onclick="toggleDarkMode()" class="p-2 rounded-lg bg-maroon-800 hover:bg-maroon-700 text-saffron-200 transition-colors" title="තේමාව වෙනස් කරන්න">
+                <i id="theme-toggle-icon" class="fa-solid fa-moon text-lg"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-1 max-w-3xl w-full mx-auto p-4 sm:p-6 pb-12">
+        
+        <!-- Navigation Breadcrumb -->
+        <nav id="breadcrumb" class="hidden mb-4 flex items-center space-x-2 space-x-reverse text-sm text-amber-800 dark:text-saffron-300 font-medium">
+            <button onclick="navigateTo('home')" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-house text-xs"></i> මුල් පිටුව</button>
+            <span id="bc-sep1" class="hidden text-amber-400"><i class="fa-solid fa-chevron-right text-xs"></i></span>
+            <button id="bc-category" onclick="navigateBackToCategory()" class="hidden hover:underline"></button>
+            <span id="bc-sep2" class="hidden text-amber-400"><i class="fa-solid fa-chevron-right text-xs"></i></span>
+            <span id="bc-matika" class="hidden text-amber-900 dark:text-saffron-200 font-bold truncate max-w-[150px] sm:max-w-none"></span>
+        </nav>
+
+        <!-- Dynamic Views Area -->
+        <div id="view-container">
+
+            <!-- 1. HOME VIEW -->
+            <section id="view-home" class="space-y-6">
+                <div class="bg-gradient-to-br from-amber-800 to-maroon-900 text-amber-50 rounded-2xl p-5 shadow-lg border border-amber-600/30 relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 opacity-10 text-amber-100 text-9xl pointer-events-none">
+                        <i class="fa-solid fa-dharmachakra"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-saffron-500/20 border border-saffron-400/40 rounded-full text-xs text-saffron-300 font-medium mb-2">අභිධර්ම පිටකය</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-saffron-200 mb-2">අභිධර්ම මාතිකා අධ්‍යයනය හා ස්වරූපාර්ථ</h2>
+                    <p class="text-sm text-amber-100/90 leading-relaxed">
+                        සර්වසංග්‍රාහී සබ්බත්තික මාතිකා, සුත්තන්ත මාතිකා, තික මාතිකා 22 සහ ගොච්ඡක 13 ට අයත් දුක මාතිකා 100 හි මාතිකා පදවල ස්වරූපාර්ථ, ස්කන්ධ, ආයතන, ධාතු සහ සත්‍ය බෙදීම් විස්තරාත්මකව අධ්‍යයනය කරන්න හා සංස්කරණය කරන්න.
+                    </p>
+                </div>
+
+                <!-- Global Search Bar -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber-700 dark:text-saffron-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="මාතිකා නම, ස්වරූපාර්ථ, පදය හෝ අංකය අනුව සොයන්න..." 
+                           class="w-full pl-10 pr-10 py-3 bg-white dark:bg-slate-800 border border-amber-300 dark:border-slate-700 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-saffron-500 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400">
+                    <button id="search-clear-btn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Search Results Area -->
+                <div id="search-results-container" class="hidden space-y-3">
+                    <div class="flex items-center justify-between border-b border-amber-200 dark:border-slate-700 pb-2">
+                        <h3 class="text-sm font-bold text-maroon-900 dark:text-saffron-200">සෙවුම් ප්‍රතිඵල (<span id="search-count">0</span>)</h3>
+                    </div>
+                    <div id="search-results-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Main Buttons Grid -->
+                <div id="home-main-buttons" class="grid grid-cols-1 gap-4">
+                    <!-- සබ්බත්තික මාතිකා -->
+                    <button onclick="navigateTo('sabbatika')" class="group relative bg-gradient-to-r from-amber-700 via-saffron-600 to-amber-700 hover:from-amber-800 hover:to-saffron-700 text-white rounded-2xl p-5 text-left shadow-md hover:shadow-xl transition-all duration-300 border border-saffron-400/50 overflow-hidden w-full">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="w-10 h-10 rounded-xl bg-white/25 backdrop-blur-md flex items-center justify-center text-xl font-bold text-saffron-100 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-saffron-200 text-xl group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">සබ්බත්තික මාතිකා සහ ස්වරූපාර්ථ</h3>
+                        <p class="text-xs text-amber-100/90">සියලු තිකදුකයන්හි සමස්ත පද සහ පරමාර්ථ ධර්ම විශ්ලේෂණය (ආදි ලබ්ධික, සබ්බ ලබ්ධික, සප්පදේශ, නිප්පදේශ ඇතුළුව).</p>
+                    </button>
+
+                    <!-- තික මාතිකා, දුක මාතිකා සහ සුත්තන්ත මාතිකා Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="showMatikaList('tika')" class="group relative bg-gradient-to-r from-saffron-500 to-amber-600 hover:from-saffron-600 hover:to-amber-700 text-white rounded-2xl p-5 text-left shadow-md hover:shadow-xl transition-all duration-300 border border-saffron-300/30 overflow-hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl font-bold text-amber-100 group-hover:scale-110 transition-transform">
+                                    22
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-saffron-200 text-lg group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-1">තික මාතිකා</h3>
+                            <p class="text-xs text-amber-100/80">ත්‍රික කොටස් 22 කින් යුක්ත මාතිකා පද 66 සහ ස්වරූපාර්ථ</p>
+                        </button>
+
+                        <button onclick="showMatikaList('duka')" class="group relative bg-gradient-to-r from-amber-800 to-maroon-800 hover:from-amber-900 hover:to-maroon-900 text-white rounded-2xl p-5 text-left shadow-md hover:shadow-xl transition-all duration-300 border border-amber-700/30 overflow-hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-xl font-bold text-saffron-300 group-hover:scale-110 transition-transform">
+                                    100
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-amber-300 text-lg group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-saffron-100 mb-1">දුක මාතිකා</h3>
+                            <p class="text-xs text-amber-200/80">ගොච්ඡක 13 ට අයත් යුගල කොටස් 100 හි මාතිකා පද සහ ස්වරූපාර්ථ</p>
+                        </button>
+
+                        <button onclick="showMatikaList('suttanta')" class="group relative bg-gradient-to-r from-maroon-900 to-amber-900 hover:from-maroon-950 hover:to-amber-950 text-white rounded-2xl p-5 text-left shadow-md hover:shadow-xl transition-all duration-300 border border-saffron-500/40 overflow-hidden">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl font-bold text-saffron-300 group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-scroll"></i>
+                                </div>
+                                <i class="fa-solid fa-arrow-right text-saffron-200 text-xl group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-saffron-100 mb-1">සුත්තන්ත මාතිකා</h3>
+                            <p class="text-xs text-amber-100/90">සුත්තන්තික මාතිකා පද සහ ස්වරූපාර්ථ (සංස්කරණය කළ හැක).</p>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. SABBATIKA MATIKA VIEW -->
+            <section id="view-sabbatika" class="hidden space-y-5">
+                <div class="flex justify-end gap-2">
+                    <button onclick="openEditSabbatikaModal()" class="text-xs text-maroon-950 bg-saffron-500 hover:bg-saffron-600 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                        <i class="fa-solid fa-pen"></i> සබ්බත්තික විස්තර සංස්කරණය
+                    </button>
+                    <button onclick="openEditSabbatikaBreakdownModal()" class="text-xs text-white bg-maroon-900 hover:bg-maroon-800 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                        <i class="fa-solid fa-pen-to-square"></i> ස්කන්ධ, ආයතන, ධාතු, සත්‍ය සංස්කරණය
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-maroon-900 to-amber-900 text-amber-50 p-5 rounded-2xl shadow border border-saffron-500/40 space-y-3">
+                   <span class="inline-block text-sm font-bold px-3 py-1 rounded-lg bg-saffron-500 text-maroon-950">සබ්බත්තික මාතිකා</span>
+                    <p id="sab-desc-main" class="text-sm font-medium text-saffron-100 leading-relaxed"></p>
+                    <div id="sab-desc-sub" class="text-xs sm:text-sm space-y-2 text-amber-100/90 pt-1"></div>
+                </div>
+
+                <div class="bg-amber-100/80 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 p-4 rounded-xl shadow-sm text-maroon-950 dark:text-saffron-200 space-y-2">
+                    <h3 class="font-bold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-network-wired text-saffron-600"></i> සප්පදේශ සහ නිප්පදේශ කොටස්
+                    </h3>
+                    <div id="sab-sappadesa-text" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-2"></div>
+                </div>
+
+                <div class="bg-amber-100/80 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 p-4 rounded-xl shadow-sm text-maroon-950 dark:text-saffron-200 space-y-2">
+                    <h3 class="font-bold text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-saffron-600"></i> පරමාර්ථ ධර්ම සතර සහ ස්වරූපාර්ථ
+                    </h3>
+                    <div id="sab-paramartha-text" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-1"></div>
+                </div>
+
+                <div class="flex border-b border-amber-200 dark:border-slate-700 space-x-1 space-x-reverse overflow-x-auto hide-scrollbar w-full bg-white dark:bg-slate-800 p-2 rounded-xl shadow-sm">
+                    <button onclick="switchSabbatikaTab('skandha')" id="sab-tab-skandha" class="flex-1 py-2 px-3 text-center rounded-lg font-bold text-xs bg-saffron-500 text-maroon-950 transition-colors flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-cubes text-xs"></i> ස්කන්ධ (5)
+                    </button>
+                    <button onclick="switchSabbatikaTab('ayatana')" id="sab-tab-ayatana" class="flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-door-open text-xs"></i> ආයතන (12)
+                    </button>
+                    <button onclick="switchSabbatikaTab('dhatu')" id="sab-tab-dhatu" class="flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-nodes text-xs"></i> ධාතු (18)
+                    </button>
+                    <button onclick="switchSabbatikaTab('sathya')" id="sab-tab-sathya" class="flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-scale-balanced text-xs"></i> සත්‍ය (4)
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-amber-200 dark:border-slate-700 shadow-sm space-y-4">
+                    <div id="sab-panel-skandha" class="sab-panel space-y-3">
+                        <h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ස්කන්ධ 5 ට බෙදීම:</h4>
+                        <div id="sab-skandha-list" class="space-y-3 text-sm"></div>
+                    </div>
+                    <div id="sab-panel-ayatana" class="sab-panel hidden space-y-3">
+                        <h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ආයතන 12 ට බෙදීම:</h4>
+                        <div id="sab-ayatana-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700 dark:text-slate-300"></div>
+                    </div>
+                    <div id="sab-panel-dhatu" class="sab-panel hidden space-y-3">
+                        <h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">පරමාර්ථ ධර්ම ධාතු 18 ට බෙදීම:</h4>
+                        <div id="sab-dhatu-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700 dark:text-slate-300"></div>
+                    </div>
+                    <div id="sab-panel-sathya" class="sab-panel hidden space-y-3">
+                        <h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 border-b border-amber-100 dark:border-slate-700 pb-2">චතුරාර්ය සත්‍යය:</h4>
+                        <div id="sab-sathya-list" class="space-y-2 text-sm text-slate-700 dark:text-slate-300"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. MATIKA LIST VIEW -->
+            <section id="view-list" class="hidden space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-amber-200 dark:border-slate-700 pb-3 gap-2">
+                    <div>
+                        <h2 id="list-title" class="text-xl font-bold text-maroon-900 dark:text-saffron-200"></h2>
+                        <p id="list-subtitle" class="text-xs text-amber-800 dark:text-saffron-400"></p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openAddMatikaModal()" class="text-xs text-maroon-950 bg-saffron-500 hover:bg-saffron-600 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                            <i class="fa-solid fa-plus"></i> නව මාතිකාවක් එකතු කරන්න
+                        </button>
+                        <button onclick="navigateTo('home')" class="text-xs text-amber-800 dark:text-saffron-300 hover:text-amber-950 font-medium px-3 py-1.5 rounded-lg border border-amber-300 dark:border-slate-700 bg-amber-50 dark:bg-slate-800">
+                            <i class="fa-solid fa-arrow-left"></i> මුල් පිටුවට
+                        </button>
+                    </div>
+                </div>
+
+                <div id="gochhaka-filter-container" class="hidden bg-amber-100/60 dark:bg-slate-800 p-3 rounded-xl border border-amber-300 dark:border-slate-700">
+                    <label for="gochhaka-select" class="block text-xs font-bold text-maroon-900 dark:text-saffron-300 mb-1">
+                        <i class="fa-solid fa-filter text-saffron-600"></i> ගොච්ඡක අනුව තෝරන්න:
+                    </label>
+                    <select id="gochhaka-select" onchange="filterDukaByGochhaka(this.value)" class="w-full bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-700 rounded-lg p-2 text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-saffron-500">
+                        <option value="all">සියලුම ගොච්ඡක සහ දුක (100)</option>
+                        <option value="1">1. හේතු ගොච්ඡකය (දුක 06)</option>
+                        <option value="2">2. චුල්ලන්තර දුකය (දුක 07)</option>
+                        <option value="3">3. ආසව ගොච්ඡකය (දුක 06)</option>
+                        <option value="4">4. සංයෝජන ගොච්ඡකය (දුක 06)</option>
+                        <option value="5">5. ගන්ථ ගොච්ඡකය (දුක 06)</option>
+                        <option value="6">6. ඕඝ ගොච්ඡකය (දුක 06)</option>
+                        <option value="7">7. යෝග ගොච්ඡකය (දුක 06)</option>
+                        <option value="8">8. නීවරණ ගොච්ඡකය (දුක 06)</option>
+                        <option value="9">9. පරාමාස ගොච්ඡකය (දුක 05)</option>
+                        <option value="10">10. මහන්තර දුකය (දුක 14)</option>
+                        <option value="11">11. උපාදාන ගොච්ඡකය (දුක 06)</option>
+                        <option value="12">12. කිලේස ගොච්ඡකය (දුක 08)</option>
+                        <option value="13">13. පිට්ඨි දුකය (දුක 18)</option>
+                    </select>
+                </div>
+
+                <div id="matika-cards-container" class="space-y-2"></div>
+            </section>
+
+            <!-- 4. MATIKA PADA & BREAKDOWN VIEW -->
+            <section id="view-details" class="hidden space-y-5">
+                <div class="bg-amber-100/80 dark:bg-slate-800 border border-amber-300 dark:border-slate-700 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+                    <div>
+                        <span id="detail-category-tag" class="text-xs font-semibold px-2.5 py-0.5 rounded bg-saffron-500 text-maroon-950"></span>
+                        <h2 id="detail-matika-title" class="text-xl font-bold text-maroon-900 dark:text-saffron-200 mt-1"></h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openEditMatikaModal()" class="text-xs text-maroon-950 bg-saffron-400 hover:bg-saffron-500 font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1">
+                            <i class="fa-solid fa-pen"></i> මාතිකා නම වෙනස් කරන්න
+                        </button>
+                        <button onclick="navigateBackToCategory()" class="text-xs text-amber-900 dark:text-saffron-200 bg-white dark:bg-slate-900 border border-amber-300 dark:border-slate-700 hover:bg-amber-50 px-3 py-1.5 rounded-lg shadow-sm">
+                            <i class="fa-solid fa-arrow-left"></i> ලැයිස්තුවට
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-amber-900 dark:text-saffron-300 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-saffron-600"></i> මාතිකා පද සහ ස්වරූපාර්ථ තෝරන්න:
+                    </h3>
+                    <button onclick="openAddPadaModal()" class="text-xs text-white bg-maroon-900 hover:bg-maroon-800 font-bold px-3 py-1.5 rounded-lg shadow flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> නව පදයක් එක් කරන්න
+                    </button>
+                </div>
+                <div id="pada-tabs-container" class="grid grid-cols-1 gap-2"></div>
+
+                <div id="pada-detail-breakdown" class="hidden flex flex-col space-y-4 pt-2 w-full">
+                    <div class="bg-maroon-900 text-amber-50 p-4 rounded-xl shadow border border-saffron-500/40 relative w-full">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="text-xs text-saffron-300 font-medium mb-1">තෝරාගත් මාතිකා පදය</div>
+                                <h3 id="current-pada-name" class="text-lg font-bold text-saffron-100"></h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openEditModal()" class="px-3 py-1.5 bg-saffron-500 hover:bg-saffron-600 text-maroon-950 font-bold text-xs rounded-lg shadow transition-colors flex items-center gap-1.5">
+                                    <i class="fa-solid fa-pen-to-square"></i> ස්වරූපාර්ථ සංස්කරණය
+                                </button>
+                                <button onclick="deleteCurrentPada()" class="px-2 py-1.5 bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs rounded-lg shadow transition-colors">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button id="bookmark-toggle-btn" onclick="toggleCurrentBookmark()" class="text-2xl text-amber-300 hover:text-saffron-400 transition-transform active:scale-95 p-1">
+                                    <i id="bookmark-icon" class="fa-regular fa-bookmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p id="current-pada-desc" class="text-xs text-amber-200/90 mt-2"></p>
+                        
+                        <div class="mt-3 pt-3 border-t border-saffron-500/30">
+                            <span class="text-xs font-bold text-saffron-300 uppercase tracking-wide block mb-1"><i class="fa-solid fa-book-bookmark text-xs"></i> ස්වරූපාර්ථ (Paramartha Definition):</span>
+                            <p id="current-swaroopartha-text" class="text-xs text-amber-100 leading-relaxed bg-black/20 p-2.5 rounded-lg border border-saffron-400/20"></p>
+                        </div>
+                    </div>
+
+                    <div class="flex border-b border-amber-200 dark:border-slate-700 space-x-1 space-x-reverse overflow-x-auto hide-scrollbar w-full">
+                        <button onclick="switchTab('skandha')" id="tab-btn-skandha" class="tab-btn border-b-2 border-saffron-600 text-saffron-700 dark:text-saffron-400 font-bold px-4 py-2 text-sm whitespace-nowrap">
+                            <i class="fa-solid fa-cubes text-xs"></i> ස්කන්ධ
+                        </button>
+                        <button onclick="switchTab('ayatana')" id="tab-btn-ayatana" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap">
+                            <i class="fa-solid fa-door-open text-xs"></i> ආයතන
+                        </button>
+                        <button onclick="switchTab('dhatu')" id="tab-btn-dhatu" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap">
+                            <i class="fa-solid fa-circle-nodes text-xs"></i> ධාතු
+                        </button>
+                        <button onclick="switchTab('sathya')" id="tab-btn-sathya" class="tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap">
+                            <i class="fa-solid fa-scale-balanced text-xs"></i> සත්‍ය
+                        </button>
+                    </div>
+
+                    <div id="tab-contents" class="w-full bg-white dark:bg-slate-800 rounded-2xl p-5 border border-amber-200 dark:border-slate-700 shadow-sm">
+                        <div id="panel-skandha" class="tab-panel space-y-3">
+                            <div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700">
+                                <span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ස්කන්ධ විශ්ලේෂණය:</span>
+                                <span id="skandha-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span>
+                            </div>
+                            <div class="space-y-2 pt-2 text-sm">
+                                <div class="flex justify-between items-center py-1 border-b border-amber-100 dark:border-slate-700"><span class="text-amber-900 dark:text-saffron-300">• රූප ස්කන්ධය:</span><span id="skandha-rupa" class="font-semibold text-amber-950 dark:text-slate-200"></span></div>
+                                <div class="flex justify-between items-center py-1 border-b border-amber-100 dark:border-slate-700"><span class="text-amber-900 dark:text-saffron-300">• වේදනා ස්කන්ධය:</span><span id="skandha-vedana" class="font-semibold text-amber-950 dark:text-slate-200"></span></div>
+                                <div class="flex justify-between items-center py-1 border-b border-amber-100 dark:border-slate-700"><span class="text-amber-900 dark:text-saffron-300">• සංඥා ස්කන්ධය:</span><span id="skandha-sanna" class="font-semibold text-amber-950 dark:text-slate-200"></span></div>
+                                <div class="flex justify-between items-center py-1 border-b border-amber-100 dark:border-slate-700"><span class="text-amber-900 dark:text-saffron-300">• සංඛාර ස්කන්ධය:</span><span id="skandha-sankhara" class="font-semibold text-amber-950 dark:text-slate-200"></span></div>
+                                <div class="flex justify-between items-center py-1 border-b border-amber-100 dark:border-slate-700"><span class="text-amber-900 dark:text-saffron-300">• විඤ්ඤාණ ස්කන්ධය:</span><span id="skandha-vinnana" class="font-semibold text-amber-950 dark:text-slate-200"></span></div>
+                            </div>
+                        </div>
+
+                        <div id="panel-ayatana" class="tab-panel hidden space-y-3">
+                            <div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700">
+                                <span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ආයතන විශ්ලේෂණය:</span>
+                                <span id="ayatana-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span>
+                            </div>
+                            <div class="space-y-2 pt-2 text-sm" id="ayatana-list"></div>
+                        </div>
+
+                        <div id="panel-dhatu" class="tab-panel hidden space-y-3">
+                            <div class="flex items-center justify-between bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700">
+                                <span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">ධාතු විශ්ලේෂණය:</span>
+                                <span id="dhatu-count" class="bg-saffron-500 text-maroon-950 font-bold px-3 py-0.5 rounded-full text-sm"></span>
+                            </div>
+                            <div class="space-y-2 pt-2 text-sm" id="dhatu-list"></div>
+                        </div>
+
+                        <div id="panel-sathya" class="tab-panel hidden space-y-3">
+                            <div class="bg-amber-50 dark:bg-slate-900 p-3 rounded-lg border border-amber-200 dark:border-slate-700 mb-2">
+                                <span class="font-bold text-amber-900 dark:text-saffron-300 text-sm">චතුරාර්ය සත්‍ය හා විනිර්මුක්ත විශ්ලේෂණය:</span>
+                            </div>
+                            <div class="space-y-2 text-sm" id="sathya-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. BOOKMARKS VIEW -->
+            <section id="view-bookmarks" class="hidden space-y-4">
+                <div class="flex items-center justify-between border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-maroon-900 dark:text-saffron-200">සුරැකි මාතිකා (Bookmarks)</h2>
+                        <p class="text-xs text-amber-800 dark:text-saffron-400">ඔබ විසින් සුරකිමින් අධ්‍යයනය කරන මාතිකා පද ලැයිස්තුව</p>
+                    </div>
+                    <button onclick="navigateTo('home')" class="text-xs text-amber-800 dark:text-saffron-300 hover:text-amber-950 font-medium px-3 py-1.5 rounded-lg border border-amber-300 dark:border-slate-700 bg-amber-50 dark:bg-slate-800">
+                        <i class="fa-solid fa-arrow-left"></i> මුල් පිටුවට
+                    </button>
+                </div>
+                <div id="bookmarks-container" class="space-y-2"></div>
+            </section>
+        </div>
+
+        <!-- Modals -->
+        <div id="edit-sabbatika-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">සබ්බත්තික මාතිකා තොරතුරු සංස්කරණය</h3>
+                    <button onclick="closeEditSabbatikaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="edit-sabbatika-form" onsubmit="saveSabbatikaData(event)" class="space-y-3 text-sm">
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ප්‍රධාන හැඳින්වීම</label>
+                        <textarea id="edit-sab-desc-main" rows="3" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ආදි සහ සබ්බ ලබ්ධික විස්තර</label>
+                        <textarea id="edit-sab-desc-sub" rows="3" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">සප්පදේශ සහ නිප්පදේශ විස්තර</label>
+                        <textarea id="edit-sab-sappadesa" rows="3" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">පරමාර්ථ ධර්ම සතර</label>
+                        <textarea id="edit-sab-paramartha" rows="3" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeEditSabbatikaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="submit" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow">සුරකින්න</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-sabbatika-breakdown-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">සබ්බත්තික ස්කන්ධ, ආයතන, ධාතු, සත්‍ය සංස්කරණය</h3>
+                    <button onclick="closeEditSabbatikaBreakdownModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="edit-sabbatika-breakdown-form" onsubmit="saveSabbatikaBreakdownData(event)" class="space-y-3 text-sm">
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ස්කන්ධ විස්තර</label>
+                        <textarea id="edit-sab-skandha-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ආයතන විස්තර</label>
+                        <textarea id="edit-sab-ayatana-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">ධාතු විස්තර</label>
+                        <textarea id="edit-sab-dhatu-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">සත්‍ය විස්තර</label>
+                        <textarea id="edit-sab-sathya-text" rows="5" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 text-xs font-mono"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeEditSabbatikaBreakdownModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="submit" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow">සුරකින්න</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 max-h-[90vh] overflow-y-auto space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">ස්වරූපාර්ථ සහ දත්ත සංස්කරණය</h3>
+                    <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="edit-form" onsubmit="savePadaData(event)" class="space-y-3 text-sm">
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">පදයේ නම</label>
+                        <input type="text" id="edit-pada-name" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700 font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">කෙටි විස්තරය</label>
+                        <input type="text" id="edit-desc" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 dark:border-slate-700">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-saffron-700 dark:text-saffron-300 mb-1"><i class="fa-solid fa-book-bookmark"></i> ස්වරූපාර්ථ</label>
+                        <textarea id="edit-swaroopartha" rows="3" class="w-full p-2.5 rounded-lg border border-saffron-400/50 dark:bg-slate-900 text-xs"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="submit" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs shadow">සුරකින්න</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-matika-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">මාතිකා නම වෙනස් කරන්න</h3>
+                    <button onclick="closeEditMatikaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <input type="text" id="edit-matika-title-input" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold">
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeEditMatikaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="button" onclick="saveMatikaTitleData()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">යාවත්කාලීන කරන්න</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-matika-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">නව මාතිකාවක් එක් කරන්න</h3>
+                    <button onclick="closeAddMatikaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <input type="text" id="new-matika-title" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold" placeholder="මාතිකා නම">
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeAddMatikaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="button" onclick="saveNewMatika()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">එක් කරන්න</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-pada-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl border border-amber-300 dark:border-slate-700 space-y-4">
+                <div class="flex justify-between items-center border-b border-amber-200 dark:border-slate-700 pb-3">
+                    <h3 class="font-bold text-lg text-maroon-900 dark:text-saffron-200">නව මාතිකා පදයක් එක් කරන්න</h3>
+                    <button onclick="closeAddPadaModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <input type="text" id="new-pada-name" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 font-bold" placeholder="පදයේ නම">
+                    <input type="text" id="new-pada-desc" class="w-full p-2.5 rounded-lg border dark:bg-slate-900" placeholder="විස්තරය">
+                    <textarea id="new-swaroopartha" rows="2" class="w-full p-2.5 rounded-lg border dark:bg-slate-900 text-xs" placeholder="ස්වරූපාර්ථය"></textarea>
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="closeAddPadaModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs">අවලංගු කරන්න</button>
+                        <button type="button" onclick="saveNewPada()" class="px-4 py-2 bg-saffron-500 text-maroon-950 font-bold rounded-lg text-xs">එක් කරන්න</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const gochhakaList = [
+            { id: 1, name: 'හේතු ගොච්ඡකය', count: 6 },
+            { id: 2, name: 'චුල්ලන්තර දුකය', count: 7 },
+            { id: 3, name: 'ආසව ගොච්ඡකය', count: 6 },
+            { id: 4, name: 'සංයෝජන ගොච්ඡකය', count: 6 },
+            { id: 5, name: 'ගන්ථ ගොච්ඡකය', count: 6 },
+            { id: 6, name: 'ඕඝ ගොච්ඡකය', count: 6 },
+            { id: 7, name: 'යෝග ගොච්ඡකය', count: 6 },
+            { id: 8, name: 'නීවරණ ගොච්ඡකය', count: 6 },
+            { id: 9, name: 'පරාමාස ගොච්ඡකය', count: 5 },
+            { id: 10, name: 'මහන්තර දුකය', count: 14 },
+            { id: 11, name: 'උපාදාන ගොච්ඡකය', count: 6 },
+            { id: 12, name: 'කිලේස ගොච්ඡකය', count: 8 },
+            { id: 13, name: 'පිට්ඨි දුකය', count: 18 }
+        ];
+
+        function generateDukaMatikaData() {
+            const dukaData = [];
+            let currentGlobalNum = 1;
+
+            gochhakaList.forEach(g => {
+                let dukaNames = [];
+                if (g.id === 1) dukaNames = ['හෙතු', 'සහෙතුක', 'හෙතුසම්පයුත්ත', 'හෙතු චෙව ධම්මා සහෙතුකා ච', 'හෙතු චෙව ධම්මා හෙතුසම්පයුත්තා ච', 'න හෙතූ ඛො පන ධම්මා සහෙතුකාපි'];
+                else if (g.id === 2) dukaNames = ['සප්පච්චය', 'සඞ්ඛත', 'සනිදස්සන', 'සප්පටිඝ', 'රූපින', 'ලොකිය', 'කෙනචි විඤ්ඤෙය්ය'];
+                else if (g.id === 3) dukaNames = ['ආසව', 'සාසව', 'ආසවසම්පයුත්ත', 'ආසවා චෙව ධම්මා සාසවා ච', 'ආසවා චෙව ධම්මා ආසවසම්පයුත්තා ච', 'ආසවවිප්පයුත්තා ඛො පන ධම්මා සාසවාපි'];
+                else if (g.id === 4) dukaNames = ['සංයොජන', 'සංයොජනිය', 'සංයොජනසම්පයුත්ත', 'සංයොජනා චෙව ධම්මා සංයොජනියා ච', 'සංයොජනා චෙව ධම්මා සංයොජනසම්පයුත්තා ච', 'සංයොජනවිප්පයුත්තා ඛො පන ධම්මා සංයොජනියාපි'];
+                else if (g.id === 5) dukaNames = ['ගන්ථ', 'ගන්ථනිය', 'ගන්ථසම්පයුත්ත', 'ගන්ථා චෙව ධම්මා ගන්ථනියා ච', 'ගන්ථා චෙව ධම්මා ගන්ථසම්පයුත්තා ච', 'ගන්ථවිප්පයුත්තා ඛො පන ධම්මා ගන්ථනියාපි'];
+                else if (g.id === 6) dukaNames = ['ඔඝ', 'ඔඝනිය', 'ඔඝසම්පයුත්ත', 'ඔඝා චෙව ධම්මා ඔඝනියා ච', 'ඔඝා චෙව ධම්මා ඔඝසම්පයුත්තා ච', 'ඔඝවිප්පයුත්තා ඛො පන ධම්මා ඔඝනියාපි'];
+                else if (g.id === 7) dukaNames = ['යොග', 'යොගනිය', 'යොගසම්පයුත්ත', 'යොගා චෙව ධම්මා යොගනියා ච', 'යොගා චෙව ධම්මා යොගසම්පයුත්තා ච', 'යොගවිප්පයුත්තා ඛො පන ධම්මා යොගනියාපි'];
+                else if (g.id === 8) dukaNames = ['නීවරණ', 'නීවරණිය', 'නීවරණසම්පයුත්ත', 'නීවරණා චෙව ධම්මා නීවරණියා ච', 'නීවරණා චෙව ධම්මා නීවරණසම්පයුත්තා ච', 'නීවරණවිප්පයුත්තා ඛො පන ධම්මා නීවරණියාපි'];
+                else if (g.id === 9) dukaNames = ['පරාමාස', 'පරාමට්ඨ', 'පරාමාසසම්පයුත්ත', 'පරාමාසා චෙව ධම්මා පරාමට්ඨා ච', 'පරාමාසවිප්පයුත්තා ඛො පන ධම්මා පරාමට්ඨාපි'];
+                else if (g.id === 10) dukaNames = ['සාරම්මණ', 'චිත්ත', 'චෙතසික', 'චිත්තසම්පයුත්ත', 'චිත්තසංසට්ඨ', 'චිත්තසමුට්ඨාන', 'චිත්තසහභු', 'චිත්තානුපරිවත්තින', 'චිත්තසංසට්ඨසමුට්ඨාන', 'චිත්තසංසට්ඨසමුට්ඨානසහභු', 'චිත්තසංසට්ඨසමුට්ඨානානුපරිවත්තින', 'අජ්ඣත්තික', 'උපාදා', 'උපාදිණ්ණ'];
+                else if (g.id === 11) dukaNames = ['උපාදාන', 'උපාදානිය', 'උපාදානසම්පයුත්ත', 'උපාදානා චෙව ධම්මා උපාදානියා ච', 'උපාදානා චෙව ධම්මා උපාදානසම්පයුත්තා ච', 'උපාදානවිප්පයුත්තා ඛො පන ධම්මා උපාදානියාපි'];
+                else if (g.id === 12) dukaNames = ['කිලෙස', 'සංකිලෙසික', 'සංකිලිට්ඨ', 'කිලෙසසම්පයුත්ත', 'කිලෙසා චෙව ධම්මා සංකිලෙසිකා ච', 'කිලෙසා චෙව ධම්මා සංකිලිට්ඨා ච', 'කිලෙසා චෙව ධම්මා කිලෙසසම්පයුත්තා ච', 'කිලෙසවිප්පයුත්තා ඛො පන ධම්මා සංකිලෙසිකාපි'];
+                else if (g.id === 13) dukaNames = ['දස්සනෙන පහාතබ්බ', 'භාවනාය පහාතබ්බ', 'දස්සනෙන පහාතබ්බහෙතුක', 'භාවනාය පහාතබ්බහෙතුක', 'සවිතක්ක', 'සවිචාර', 'සප්පීතික', 'පීතිසහගත', 'සුඛසහගත', 'උපෙක්ඛාසහගත', 'කාමාවචර', 'රූපාවචර', 'අරූපාවචර', 'පරියාපන්න', 'නිය්යානික', 'නියත', 'සඋත්තර', 'සරණ'];
+
+                for (let i = 0; i < g.count; i++) {
+                    const num = currentGlobalNum;
+                    const dName = dukaNames[i] || `දුක ${i+1}`;
+                    dukaData.push({
+                        id: `duka-${num}`, number: num, gochhakaId: g.id, gochhakaName: g.name, title: `${num}. ${dName} දුකය`,
+                        padas: [
+                            { id: `duka-${num}-pada-1`, name: `${dName} ධම්මා`, desc: `${g.name} හි ${dName} දුකෙහි ප්‍රථම පදය`, swaroopartha: `${dName} පදයට අදාළ පරමාර්ථ ධර්ම විග්‍රහය සහ ස්වරූපාර්ථය.`, skandha: { total: 'පරමාර්ථ අනුව', rupa: 'රූප', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 යි', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 යි', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ සත්‍යය'] } },
+                            { id: `duka-${num}-pada-2`, name: `න ${dName} ධම්මා`, desc: `${g.name} හි ${dName} දුකෙහි ද්විතීය පදය`, swaroopartha: `න ${dName} පදයට අදාළ පරමාර්ථ ධර්ම විග්‍රහය සහ ස්වරූපාර්ථය.`, skandha: { total: '5 යි', rupa: 'රූප 28', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '12 යි', details: ['• සියලු ආයතන'] }, dhatu: { total: '18 යි', details: ['• සියලු ධාතු'] }, sathya: { details: ['• දුක්ඛ / නිරෝධ සත්‍යය'] } }
+                        ]
+                    });
+                    currentGlobalNum++;
+                }
+            });
+            return dukaData;
+        }
+
+        const defaultTikaData = [
+            {
+                id: 'tika-1', number: 1, title: '1. කුසල තිකය', padas: [
+                    { id: 'tika-1-pada-1', name: 'කුසලා ධම්මා', desc: 'කුසල් සිත් 21 සහ සම්ප්‍රයුක්ත චෛතසික 38', swaroopartha: 'කුසල පදයේ ස්වරූපාර්ථය: කුසල් සිත් 21 සහ සම්ප්‍රයුක්ත චෛතසික 38.', skandha: { total: '4 ක්', rupa: 'නැත', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 ක්', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 ක්', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ / මාර්ග සත්‍යය'] } },
+                    { id: 'tika-1-pada-2', name: 'අකුසලා ධම්මා', desc: 'අකුසල් සිත් 12 සහ චෛතසික 27', swaroopartha: 'අකුසල පදයේ ස්වරූපාර්ථය: අකුසල් සිත් 12 සහ චෛතසික 27.', skandha: { total: '4 ක්', rupa: 'නැත', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 ක්', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 ක්', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ සත්‍යය'] } },
+                    { id: 'tika-1-pada-3', name: 'අබ්‍යාකතා ධම්මා', desc: 'විපාක, ක්‍රියා, රූප හා නිර්වාණය', swaroopartha: 'අබ්‍යාකත පදයේ ස්වරූපාර්ථය: විපාක, ක්‍රියා, රූප හා නිර්වාණයයි.', skandha: { total: '5 ක්', rupa: 'රූප 28', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '12 ක්', details: ['• සියලු ආයතන'] }, dhatu: { total: '18 ක්', details: ['• සියලු ධාතු'] }, sathya: { details: ['• දුක්ඛ / නිරෝධ සත්‍යය'] } }
+                ]
+            }
+        ];
+
+        const tikaTitles = ['කුසල', 'වේදනා', 'විපාක', 'උපාදින්න', 'සංකිලිට්ඨ', 'විතක්ක', 'පීති', 'දස්සනේන පහාතබ්බ', 'දස්සනේන පහාතබ්බහේතුක', 'ආචයගාමි', 'සේක්ඛ', 'පරිත්ත', 'පරිත්තාරම්මණ', 'හීන', 'මිච්ඡත්තනියාත', 'මග්ගාරම්මණ', 'උප්පන්න', 'අතීත', 'අතීතාරම්මණ', 'අජ්ඣත්ත', 'අජ්ඣත්තාරම්මණ', 'සනිදස්සන'];
+        for (let i = 1; i < 22; i++) {
+            const num = i + 1;
+            const tName = tikaTitles[i];
+            defaultTikaData.push({
+                id: `tika-${num}`, number: num, title: `${num}. ${tName} තිකය`,
+                padas: [
+                    { id: `tika-${num}-pada-1`, name: `${tName} ප්‍රථම පදය`, desc: `${tName} තිකයේ ප්‍රථම පදය`, swaroopartha: `${tName} තිකයේ ප්‍රථම පදයේ ස්වරූපාර්ථය.`, skandha: { total: '4 ක්', rupa: 'නැත', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 ක්', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 ක්', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ සත්‍යය'] } },
+                    { id: `tika-${num}-pada-2`, name: `${tName} ද්විතීය පදය`, desc: `${tName} තිකයේ ද්විතීය පදය`, swaroopartha: `${tName} තිකයේ ද්විතීය පදයේ ස්වරූපාර්ථය.`, skandha: { total: '4 ක්', rupa: 'නැත', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 ක්', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 ක්', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ සත්‍යය'] } },
+                    { id: `tika-${num}-pada-3`, name: `${tName} තෘතීය පදය`, desc: `${tName} තිකයේ තෘතීය පදය`, swaroopartha: `${tName} තිකයේ තෘතීය පදයේ ස්වරූපාර්ථය.`, skandha: { total: '5 ක්', rupa: 'රූප 28', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '12 ක්', details: ['• සියලු ආයතන'] }, dhatu: { total: '18 ක්', details: ['• සියලු ධාතු'] }, sathya: { details: ['• දුක්ඛ / නිරෝධ සත්‍යය'] } }
+                ]
+            });
+        }
+
+        const defaultSuttantaData = [
+            {
+                id: 'suttanta-1', number: 1, title: '1. නීවරණ සුත්තන්ත මාතිකාව', padas: [
+                    { id: 'suttanta-1-pada-1', name: 'කාමච්ඡන්ද නීවරණං', desc: 'කාමච්ඡන්ද නීවරණය', swaroopartha: 'කාමච්ඡන්ද නීවරණයේ ස්වරූපාර්ථය.', skandha: { total: '4 ක්', rupa: 'නැත', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 ක්', details: ['• මනායතනය', '• ධම්මායතනය'] }, dhatu: { total: '2 ක්', details: ['• මනෝවිඤ්ඤාණ ධාතුව', '• ධර්ම ධාතුව'] }, sathya: { details: ['• දුක්ඛ සත්‍යය'] } }
+                ]
+            }
+        ];
+
+        let matikaData = {
+            tika: JSON.parse(localStorage.getItem('app_tika_data') || JSON.stringify(defaultTikaData)),
+            duka: JSON.parse(localStorage.getItem('app_duka_data') || JSON.stringify(generateDukaMatikaData())),
+            suttanta: JSON.parse(localStorage.getItem('app_suttanta_data') || JSON.stringify(defaultSuttantaData))
+        };
+
+        const defaultSabbatikaContent = {
+            mainDesc: "සර්වසංග්‍රාහී සබ්බත්තික මාතිකා යනු සියලු තිකදුකයන්හි සමස්ත පද සහ පරමාර්ථ ධර්ම විශ්ලේෂණයයි.",
+            subDesc: ["I. ආදි ලබ්ධික", "II. සබ්බ ලබ්ධික"],
+            sappadesa: ["I. සප්පදේශා", "II. නිප්පදේශා"],
+            paramartha: ["1. චිත්තං", "2. චෛතසිකං", "3. රූපං", "4. නිබ්බානං"],
+            skandha: ["1. රූපක්බන්ධෝ", "2. වේදනාක්බන්ධෝ", "3. සඤ්ඤාක්බන්ධෝ", "4. සංඛාරක්බන්ධෝ", "5. විඤ්ඤාණක්බන්ධෝ"],
+            ayatana: ["1. චක්ඛායතනය", "2. සෝතායතනය"],
+            dhatu: ["1-5. පඤ්ච ප්‍රසාද ධාතු"],
+            sathya: ["1. දුක්ඛ සත්‍යය"]
+        };
+
+        let sabbatikaData = JSON.parse(localStorage.getItem('app_sabbatika_data') || JSON.stringify(defaultSabbatikaContent));
+        let currentState = { view: 'home', category: null, selectedMatika: null, selectedPada: null, activeGochhakaFilter: 'all' };
+        let bookmarks = JSON.parse(localStorage.getItem('matika_bookmarks') || '[]');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateFavBadge();
+            renderSabbatikaView();
+        });
+
+        function initTheme() {
+            const isDark = localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            if (isDark) { document.documentElement.classList.add('dark'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg'; }
+            else { document.documentElement.classList.remove('dark'); document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg'; }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
+                document.getElementById('theme-toggle-icon').className = 'fa-solid fa-moon text-lg';
+            } else {
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
+                document.getElementById('theme-toggle-icon').className = 'fa-solid fa-sun text-lg';
+            }
+        }
+
+        function navigateTo(view) {
+            currentState.view = view;
+            ['view-home', 'view-sabbatika', 'view-list', 'view-details', 'view-bookmarks', 'breadcrumb'].forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            if (view === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+                currentState.category = null; currentState.selectedMatika = null;
+            } else if (view === 'sabbatika') {
+                document.getElementById('view-sabbatika').classList.remove('hidden');
+                currentState.category = 'sabbatika'; renderSabbatikaView(); updateBreadcrumb();
+            } else if (view === 'list') {
+                document.getElementById('view-list').classList.remove('hidden'); updateBreadcrumb();
+            } else if (view === 'details') {
+                document.getElementById('view-details').classList.remove('hidden'); updateBreadcrumb();
+            } else if (view === 'bookmarks') {
+                document.getElementById('view-bookmarks').classList.remove('hidden'); updateBreadcrumb();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderSabbatikaView() {
+            document.getElementById('sab-desc-main').textContent = sabbatikaData.mainDesc;
+            document.getElementById('sab-desc-sub').innerHTML = sabbatikaData.subDesc.map(t => `<p>${t}</p>`).join('');
+            document.getElementById('sab-sappadesa-text').innerHTML = sabbatikaData.sappadesa.map(t => `<p>${t}</p>`).join('');
+            document.getElementById('sab-paramartha-text').innerHTML = sabbatikaData.paramartha.map(t => `<p>${t}</p>`).join('');
+            if (sabbatikaData.skandha) document.getElementById('sab-skandha-list').innerHTML = sabbatikaData.skandha.map(i => `<div class="p-2 bg-amber-50 dark:bg-slate-900 rounded border border-amber-200 dark:border-slate-700">${i}</div>`).join('');
+            if (sabbatikaData.ayatana) document.getElementById('sab-ayatana-list').innerHTML = sabbatikaData.ayatana.map(i => `<div class="p-2 bg-amber-50 dark:bg-slate-900 rounded border border-amber-200 dark:border-slate-700">${i}</div>`).join('');
+            if (sabbatikaData.dhatu) document.getElementById('sab-dhatu-list').innerHTML = sabbatikaData.dhatu.map(i => `<div class="p-2 bg-amber-50 dark:bg-slate-900 rounded border border-amber-200 dark:border-slate-700">${i}</div>`).join('');
+            if (sabbatikaData.sathya) document.getElementById('sab-sathya-list').innerHTML = sabbatikaData.sathya.map(i => `<div class="p-3 bg-amber-50 dark:bg-slate-900 rounded-lg border border-amber-200 dark:border-slate-700">${i}</div>`).join('');
+        }
+
+        function switchSabbatikaTab(tab) {
+            ['skandha', 'ayatana', 'dhatu', 'sathya'].forEach(t => {
+                document.getElementById(`sab-panel-${t}`).classList.toggle('hidden', t !== tab);
+                const btn = document.getElementById(`sab-tab-${t}`);
+                if (t === tab) {
+                    btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-bold text-xs bg-saffron-500 text-maroon-950 transition-colors flex items-center justify-center gap-1';
+                } else {
+                    btn.className = 'flex-1 py-2 px-3 text-center rounded-lg font-medium text-xs text-amber-900 dark:text-slate-300 hover:bg-amber-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-1';
+                }
+            });
+        }
+
+        function showMatikaList(category) {
+            currentState.category = category;
+            navigateTo('list');
+            const titleEl = document.getElementById('list-title');
+            const subEl = document.getElementById('list-subtitle');
+            const filterContainer = document.getElementById('gochhaka-filter-container');
+
+            if (category === 'tika') {
+                titleEl.textContent = 'තික මාතිකා (ටික 22)';
+                subEl.textContent = 'ත්‍රික කොටස් 22 කින් යුක්ත මාතිකා පද ලැයිස්තුව';
+                filterContainer.classList.add('hidden');
+            } else if (category === 'duka') {
+                titleEl.textContent = 'දුක මාතිකා (දුක 100)';
+                subEl.textContent = 'ගොච්ඡක 13 ට අයත් දුක මාතිකා 100 ලැයිස්තුව';
+                filterContainer.classList.remove('hidden');
+                document.getElementById('gochhaka-select').value = currentState.activeGochhakaFilter;
+            } else if (category === 'suttanta') {
+                titleEl.textContent = 'සුත්තන්ත මාතිකා';
+                subEl.textContent = 'සුත්තන්තික මාතිකා පද සහ විස්තර';
+                filterContainer.classList.add('hidden');
+            }
+            renderMatikaCards();
+        }
+
+        function filterDukaByGochhaka(val) {
+            currentState.activeGochhakaFilter = val;
+            renderMatikaCards();
+        }
+
+        function renderMatikaCards() {
+            const container = document.getElementById('matika-cards-container');
+            const cat = currentState.category;
+            let list = matikaData[cat] || [];
+
+            if (cat === 'duka' && currentState.activeGochhakaFilter !== 'all') {
+                const gId = parseInt(currentState.activeGochhakaFilter);
+                list = list.filter(item => item.gochhakaId === gId);
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = '<p class="text-center text-sm text-slate-500 py-6">මෙම කාණ්ඩයට අදාළ මාතිකා හමු නොවීය.</p>';
+                return;
+            }
+
+            container.innerHTML = list.map(item => `
+                <div onclick="selectMatika('${item.id}')" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-amber-200 dark:border-slate-700 shadow-sm hover:border-saffron-500 cursor-pointer transition-all flex items-center justify-between group">
+                    <div>
+                        <div class="text-xs text-saffron-600 dark:text-saffron-400 font-bold mb-0.5">${item.gochhakaName || (cat === 'tika' ? 'තික මාතිකා' : 'සුත්තන්ත මාතිකා')}</div>
+                        <h3 class="font-bold text-base text-maroon-900 dark:text-saffron-200 group-hover:text-saffron-600 transition-colors">${item.title}</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">පද ගණන: ${item.padas ? item.padas.length : 0}</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-amber-400 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            `).join('');
+        }
+
+        function selectMatika(id) {
+            const cat = currentState.category;
+            const list = matikaData[cat] || [];
+            const found = list.find(x => x.id === id);
+            if (!found) return;
+
+            currentState.selectedMatika = found;
+            currentState.selectedPada = found.padas && found.padas.length > 0 ? found.padas[0] : null;
+            navigateTo('details');
+            renderDetailsView();
+        }
+
+        function renderDetailsView() {
+            const matika = currentState.selectedMatika;
+            if (!matika) return;
+
+            document.getElementById('detail-category-tag').textContent = currentState.category.toUpperCase();
+            document.getElementById('detail-matika-title').textContent = matika.title;
+
+            const tabsContainer = document.getElementById('pada-tabs-container');
+            if (!matika.padas || matika.padas.length === 0) {
+                tabsContainer.innerHTML = '<p class="text-xs text-slate-500">පද නොමැත.</p>';
+                document.getElementById('pada-detail-breakdown').classList.add('hidden');
+                return;
+            }
+
+            tabsContainer.innerHTML = matika.padas.map(p => `
+                <button onclick="selectPada('${p.id}')" class="w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between ${currentState.selectedPada && currentState.selectedPada.id === p.id ? 'bg-maroon-900 text-amber-50 border-saffron-500 shadow' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-amber-200 dark:border-slate-700 hover:border-saffron-400'}">
+                    <div>
+                        <div class="font-bold text-sm">${p.name}</div>
+                        <div class="text-xs opacity-80 truncate max-w-[280px] sm:max-w-md">${p.desc || ''}</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-xs opacity-60"></i>
+                </button>
+            `).join('');
+
+            if (currentState.selectedPada) {
+                renderPadaBreakdown(currentState.selectedPada);
+            }
+        }
+
+        function selectPada(padaId) {
+            const matika = currentState.selectedMatika;
+            if (!matika || !matika.padas) return;
+            const found = matika.padas.find(p => p.id === padaId);
+            if (found) {
+                currentState.selectedPada = found;
+                renderDetailsView();
+            }
+        }
+
+        function renderPadaBreakdown(pada) {
+            document.getElementById('pada-detail-breakdown').classList.remove('hidden');
+            document.getElementById('current-pada-name').textContent = pada.name;
+            document.getElementById('current-pada-desc').textContent = pada.desc || '';
+            document.getElementById('current-swaroopartha-text').textContent = pada.swaroopartha || 'ස්වරූපාර්ථ විස්තරයක් නොමැත.';
+
+            // Skandha
+            const sk = pada.skandha || {};
+            document.getElementById('skandha-count').textContent = sk.total || '-';
+            document.getElementById('skandha-rupa').textContent = sk.rupa || '-';
+            document.getElementById('skandha-vedana').textContent = sk.vedana || '-';
+            document.getElementById('skandha-sanna').textContent = sk.sanna || '-';
+            document.getElementById('skandha-sankhara').textContent = sk.sankhara || '-';
+            document.getElementById('skandha-vinnana').textContent = sk.vinnana || '-';
+
+            // Ayatana
+            const ay = pada.ayatana || {};
+            document.getElementById('ayatana-count').textContent = ay.total || '-';
+            document.getElementById('ayatana-list').innerHTML = (ay.details || []).map(d => `<div class="p-2 bg-amber-50 dark:bg-slate-900 rounded border border-amber-200 dark:border-slate-700">${d}</div>`).join('');
+
+            // Dhatu
+            const dh = pada.dhatu || {};
+            document.getElementById('dhatu-count').textContent = dh.total || '-';
+            document.getElementById('dhatu-list').innerHTML = (dh.details || []).map(d => `<div class="p-2 bg-amber-50 dark:bg-slate-900 rounded border border-amber-200 dark:border-slate-700">${d}</div>`).join('');
+
+            // Sathya
+            const st = pada.sathya || {};
+            document.getElementById('sathya-list').innerHTML = (st.details || []).map(d => `<div class="p-3 bg-amber-50 dark:bg-slate-900 rounded-lg border border-amber-200 dark:border-slate-700">${d}</div>`).join('');
+
+            updateBookmarkIconState();
+        }
+
+        function switchTab(tab) {
+            ['skandha', 'ayatana', 'dhatu', 'sathya'].forEach(t => {
+                document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tab);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tab) {
+                    btn.className = 'tab-btn border-b-2 border-saffron-600 text-saffron-700 dark:text-saffron-400 font-bold px-4 py-2 text-sm whitespace-nowrap';
+                } else {
+                    btn.className = 'tab-btn border-b-2 border-transparent text-amber-800 dark:text-slate-400 hover:text-amber-950 px-4 py-2 text-sm whitespace-nowrap';
+                }
+            });
+        }
+
+        function updateBreadcrumb() {
+            const bc = document.getElementById('breadcrumb');
+            bc.classList.remove('hidden');
+            const sep1 = document.getElementById('bc-sep1');
+            const catBtn = document.getElementById('bc-category');
+            const sep2 = document.getElementById('bc-sep2');
+            const matikaSpan = document.getElementById('bc-matika');
+
+            if (currentState.view === 'sabbatika') {
+                sep1.classList.remove('hidden'); catBtn.classList.remove('hidden');
+                catBtn.textContent = 'සබ්බත්තික මාතිකා';
+                catBtn.onclick = () => navigateTo('sabbatika');
+                sep2.classList.add('hidden'); matikaSpan.classList.add('hidden');
+            } else if (currentState.view === 'list') {
+                sep1.classList.remove('hidden'); catBtn.classList.remove('hidden');
+                catBtn.textContent = currentState.category === 'tika' ? 'තික මාතිකා' : currentState.category === 'duka' ? 'දුක මාතිකා' : 'සුත්තන්ත මාතිකා';
+                catBtn.onclick = () => showMatikaList(currentState.category);
+                sep2.classList.add('hidden'); matikaSpan.classList.add('hidden');
+            } else if (currentState.view === 'details') {
+                sep1.classList.remove('hidden'); catBtn.classList.remove('hidden');
+                catBtn.textContent = currentState.category === 'tika' ? 'තික මාතිකා' : currentState.category === 'duka' ? 'දුක මාතිකා' : 'සුත්තන්ත මාතිකා';
+                catBtn.onclick = () => showMatikaList(currentState.category);
+                sep2.classList.remove('hidden'); matikaSpan.classList.remove('hidden');
+                matikaSpan.textContent = currentState.selectedMatika ? currentState.selectedMatika.title : '';
+            } else if (currentState.view === 'bookmarks') {
+                sep1.classList.remove('hidden'); catBtn.classList.remove('hidden');
+                catBtn.textContent = 'සුරැකි මාතිකා';
+                catBtn.onclick = () => showBookmarks();
+                sep2.classList.add('hidden'); matikaSpan.classList.add('hidden');
+            } else {
+                bc.classList.add('hidden');
+            }
+        }
+
+        function navigateBackToCategory() {
+            if (currentState.category === 'sabbatika') navigateTo('sabbatika');
+            else showMatikaList(currentState.category);
+        }
+
+        function showBookmarks() {
+            currentState.view = 'bookmarks';
+            navigateTo('bookmarks');
+            const container = document.getElementById('bookmarks-container');
+            if (bookmarks.length === 0) {
+                container.innerHTML = '<p class="text-center text-sm text-slate-500 py-6">සුරැකි මාතිකා පද කිසිවක් නොමැත.</p>';
+                return;
+            }
+            container.innerHTML = bookmarks.map(b => `
+                <div onclick="openBookmarkedItem('${b.cat}', '${b.matikaId}', '${b.padaId}')" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-amber-200 dark:border-slate-700 shadow-sm hover:border-saffron-500 cursor-pointer transition-all flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-saffron-500 text-maroon-950 uppercase">${b.cat}</span>
+                        <h3 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 mt-1">${b.matikaTitle} - <span class="text-saffron-600">${b.padaName}</span></h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-amber-400"></i>
+                </div>
+            `).join('');
+        }
+
+        function openBookmarkedItem(cat, matikaId, padaId) {
+            currentState.category = cat;
+            const list = matikaData[cat] || [];
+            const matika = list.find(m => m.id === matikaId);
+            if (matika) {
+                currentState.selectedMatika = matika;
+                const pada = matika.padas.find(p => p.id === padaId);
+                currentState.selectedPada = pada || matika.padas[0];
+                navigateTo('details');
+                renderDetailsView();
+            }
+        }
+
+        function toggleCurrentBookmark() {
+            if (!currentState.selectedMatika || !currentState.selectedPada) return;
+            const p = currentState.selectedPada;
+            const m = currentState.selectedMatika;
+            const cat = currentState.category;
+
+            const index = bookmarks.findIndex(b => b.padaId === p.id);
+            if (index > -1) {
+                bookmarks.splice(index, 1);
+            } else {
+                bookmarks.push({ cat, matikaId: m.id, matikaTitle: m.title, padaId: p.id, padaName: p.name });
+            }
+            localStorage.setItem('matika_bookmarks', JSON.stringify(bookmarks));
+            updateBookmarkIconState();
+            updateFavBadge();
+        }
+
+        function updateBookmarkIconState() {
+            if (!currentState.selectedPada) return;
+            const icon = document.getElementById('bookmark-icon');
+            const exists = bookmarks.some(b => b.padaId === currentState.selectedPada.id);
+            if (exists) {
+                icon.className = 'fa-solid fa-bookmark text-saffron-500';
+            } else {
+                icon.className = 'fa-regular fa-bookmark';
+            }
+        }
+
+        function updateFavBadge() {
+            const badge = document.getElementById('fav-badge');
+            if (bookmarks.length > 0) {
+                badge.classList.remove('hidden');
+                badge.textContent = bookmarks.length;
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('search-results-container').classList.add('hidden');
+            document.getElementById('search-clear-btn').classList.add('hidden');
+        }
+
+        function handleSearch(query) {
+            const clearBtn = document.getElementById('search-clear-btn');
+            const resContainer = document.getElementById('search-results-container');
+            const resList = document.getElementById('search-results-list');
+            const countEl = document.getElementById('search-count');
+
+            if (!query || query.trim() === '') {
+                clearBtn.classList.add('hidden');
+                resContainer.classList.add('hidden');
+                return;
+            }
+
+            clearBtn.classList.remove('hidden');
+            resContainer.classList.remove('hidden');
+
+            const q = query.toLowerCase();
+            let results = [];
+
+            ['tika', 'duka', 'suttanta'].forEach(cat => {
+                (matikaData[cat] || []).forEach(m => {
+                    (m.padas || []).forEach(p => {
+                        if (m.title.toLowerCase().includes(q) || p.name.toLowerCase().includes(q) || (p.swaroopartha && p.swaroopartha.toLowerCase().includes(q))) {
+                            results.push({ cat, matikaId: m.id, matikaTitle: m.title, padaId: p.id, padaName: p.name, swaroopartha: p.swaroopartha });
+                        }
+                    });
+                });
+            });
+
+            countEl.textContent = results.length;
+            if (results.length === 0) {
+                resList.innerHTML = '<p class="text-xs text-slate-500 py-3 text-center">සෙවුම් ප්‍රතිඵල හමු නොවීය.</p>';
+                return;
+            }
+
+            resList.innerHTML = results.slice(0, 15).map(r => `
+                <div onclick="openBookmarkedItem('${r.cat}', '${r.matikaId}', '${r.padaId}')" class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-amber-200 dark:border-slate-700 shadow-sm hover:border-saffron-500 cursor-pointer transition-all">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-saffron-500 text-maroon-950 uppercase">${r.cat}</span>
+                    <h4 class="font-bold text-sm text-maroon-900 dark:text-saffron-200 mt-1">${r.matikaTitle} - <span class="text-saffron-600">${r.padaName}</span></h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">${r.swaroopartha || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        // Modal Handlers
+        function openEditSabbatikaModal() {
+            document.getElementById('edit-sab-desc-main').value = sabbatikaData.mainDesc;
+            document.getElementById('edit-sab-desc-sub').value = sabbatikaData.subDesc.join('\n');
+            document.getElementById('edit-sab-sappadesa').value = sabbatikaData.sappadesa.join('\n');
+            document.getElementById('edit-sab-paramartha').value = sabbatikaData.paramartha.join('\n');
+            document.getElementById('edit-sabbatika-modal').classList.remove('hidden');
+        }
+        function closeEditSabbatikaModal() { document.getElementById('edit-sabbatika-modal').classList.add('hidden'); }
+        function saveSabbatikaData(e) {
+            e.preventDefault();
+            sabbatikaData.mainDesc = document.getElementById('edit-sab-desc-main').value;
+            sabbatikaData.subDesc = document.getElementById('edit-sab-desc-sub').value.split('\n').filter(Boolean);
+            sabbatikaData.sappadesa = document.getElementById('edit-sab-sappadesa').value.split('\n').filter(Boolean);
+            sabbatikaData.paramartha = document.getElementById('edit-sab-paramartha').value.split('\n').filter(Boolean);
+            localStorage.setItem('app_sabbatika_data', JSON.stringify(sabbatikaData));
+            renderSabbatikaView();
+            closeEditSabbatikaModal();
+        }
+
+        function openEditSabbatikaBreakdownModal() {
+            document.getElementById('edit-sab-skandha-text').value = (sabbatikaData.skandha || []).join('\n');
+            document.getElementById('edit-sab-ayatana-text').value = (sabbatikaData.ayatana || []).join('\n');
+            document.getElementById('edit-sab-dhatu-text').value = (sabbatikaData.dhatu || []).join('\n');
+            document.getElementById('edit-sab-sathya-text').value = (sabbatikaData.sathya || []).join('\n');
+            document.getElementById('edit-sabbatika-breakdown-modal').classList.remove('hidden');
+        }
+        function closeEditSabbatikaBreakdownModal() { document.getElementById('edit-sabbatika-breakdown-modal').classList.add('hidden'); }
+        function saveSabbatikaBreakdownData(e) {
+            e.preventDefault();
+            sabbatikaData.skandha = document.getElementById('edit-sab-skandha-text').value.split('\n').filter(Boolean);
+            sabbatikaData.ayatana = document.getElementById('edit-sab-ayatana-text').value.split('\n').filter(Boolean);
+            sabbatikaData.dhatu = document.getElementById('edit-sab-dhatu-text').value.split('\n').filter(Boolean);
+            sabbatikaData.sathya = document.getElementById('edit-sab-sathya-text').value.split('\n').filter(Boolean);
+            localStorage.setItem('app_sabbatika_data', JSON.stringify(sabbatikaData));
+            renderSabbatikaView();
+            closeEditSabbatikaBreakdownModal();
+        }
+
+        function openEditModal() {
+            if (!currentState.selectedPada) return;
+            const p = currentState.selectedPada;
+            document.getElementById('edit-pada-name').value = p.name;
+            document.getElementById('edit-desc').value = p.desc || '';
+            document.getElementById('edit-swaroopartha').value = p.swaroopartha || '';
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+        function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); }
+        function savePadaData(e) {
+            e.preventDefault();
+            if (!currentState.selectedPada || !currentState.selectedMatika) return;
+            currentState.selectedPada.name = document.getElementById('edit-pada-name').value;
+            currentState.selectedPada.desc = document.getElementById('edit-desc').value;
+            currentState.selectedPada.swaroopartha = document.getElementById('edit-swaroopartha').value;
+
+            localStorage.setItem(`app_${currentState.category}_data`, JSON.stringify(matikaData[currentState.category]));
+            renderDetailsView();
+            closeEditModal();
+        }
+
+        function openEditMatikaModal() {
+            if (!currentState.selectedMatika) return;
+            document.getElementById('edit-matika-title-input').value = currentState.selectedMatika.title;
+            document.getElementById('edit-matika-modal').classList.remove('hidden');
+        }
+        function closeEditMatikaModal() { document.getElementById('edit-matika-modal').classList.add('hidden'); }
+        function saveMatikaTitleData() {
+            if (!currentState.selectedMatika) return;
+            currentState.selectedMatika.title = document.getElementById('edit-matika-title-input').value;
+            localStorage.setItem(`app_${currentState.category}_data`, JSON.stringify(matikaData[currentState.category]));
+            renderDetailsView();
+            closeEditMatikaModal();
+        }
+
+        function openAddMatikaModal() { document.getElementById('add-matika-modal').classList.remove('hidden'); }
+        function closeAddMatikaModal() { document.getElementById('add-matika-modal').classList.add('hidden'); }
+        function saveNewMatika() {
+            const title = document.getElementById('new-matika-title').value;
+            if (!title) return;
+            const cat = currentState.category;
+            const newId = `${cat}-${Date.now()}`;
+            const newItem = { id: newId, number: matikaData[cat].length + 1, title, padas: [] };
+            matikaData[cat].push(newItem);
+            localStorage.setItem(`app_${cat}_data`, JSON.stringify(matikaData[cat]));
+            closeAddMatikaModal();
+            renderMatikaCards();
+        }
+
+        function openAddPadaModal() { document.getElementById('add-pada-modal').classList.remove('hidden'); }
+        function closeAddPadaModal() { document.getElementById('add-pada-modal').classList.add('hidden'); }
+        function saveNewPada() {
+            const name = document.getElementById('new-pada-name').value;
+            const desc = document.getElementById('new-pada-desc').value;
+            const swaroopartha = document.getElementById('new-swaroopartha').value;
+            if (!name || !currentState.selectedMatika) return;
+
+            const newPada = { id: `pada-${Date.now()}`, name, desc, swaroopartha, skandha: { total: 'ස්කන්ධ', rupa: 'රූප', vedana: 'වේදනා', sanna: 'සඤ්ඤා', sankhara: 'සංඛාර', vinnana: 'සිත්' }, ayatana: { total: '2 යි', details: ['මනායතනය'] }, dhatu: { total: '2 යි', details: ['මනෝවිඤ්ඤාණ ධාතුව'] }, sathya: { details: ['දුක්ඛ සත්‍යය'] } };
+            currentState.selectedMatika.padas.push(newPada);
+            currentState.selectedPada = newPada;
+            localStorage.setItem(`app_${currentState.category}_data`, JSON.stringify(matikaData[currentState.category]));
+            closeAddPadaModal();
+            renderDetailsView();
+        }
+
+        function deleteCurrentPada() {
+            if (!currentState.selectedMatika || !currentState.selectedPada) return;
+            const padas = currentState.selectedMatika.padas;
+            const index = padas.findIndex(p => p.id === currentState.selectedPada.id);
+            if (index > -1) {
+                padas.splice(index, 1);
+                currentState.selectedPada = padas.length > 0 ? padas[0] : null;
+                localStorage.setItem(`app_${currentState.category}_data`, JSON.stringify(matikaData[currentState.category]));
+                renderDetailsView();
+            }
+        }
+    </script>
+</body>
+</html>
